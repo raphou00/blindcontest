@@ -6,6 +6,7 @@ import Create from "./routes/Create";
 import Join from "./routes/Join";
 import Lobby from "./routes/Lobby";
 import Game from "./routes/Game";
+import Results from "./routes/Results";
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
                             <Route path="/join" element={<Join />} />
                             <Route path="/lobby/:room" element={<Lobby />} />
                             <Route path="/game/:room" element={<Game />} />
+                            <Route path="/results/:room" element={<Results />} />
                         </Route>
                     </Routes>
                 </NativeRouter>

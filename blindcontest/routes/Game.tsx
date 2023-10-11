@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
-import { useSearchParams } from "react-router-native";
+import { useNavigate, useSearchParams, NavigateFunction } from "react-router-native";
 import { Audio } from "expo-av";
 import { socket } from "../server/Server";
 import { searchSongs } from "../server/Search";
 import SearchSong from "../components/SearchSong";
+import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 
 const soundObject: Audio.Sound = new Audio.Sound();
 
 export default function Game() {
+    const [players, setPlayers] = useState<any[]>([]);
+    const [ranking, setRanking] = useState<boolean>(false);
     const [songs, setSongs] = useState<any[]>([]);
     const [answer, setAnswer] = useState<any>(false);
     const [myAnswer, setMyAnswer] = useState<any>(null);
@@ -18,19 +21,24 @@ export default function Game() {
     const [search, setSearch] = useState<any>("");
     const [searchParams] = useSearchParams();
     const host: boolean = searchParams.get("host") == "true" ? true : false;
+    const navigate: NavigateFunction = useNavigate();
 
     useEffect(() => {
         onChangeSearch("Taylor");
         setSearch("");
 
-        if (host) socket.emit("audio_room");
-        
+        if (host) {
+            socket.emit("audio_room");            
+        }
+
         socket.on("audio_room", data => {
             playSong(data.audio);
+            console.log(data.cheat);
         });
-
+        
         socket.on("answer_room", data => {
             setAnswer(data.answer);
+            setPlayers(data.players);
             setAnswered(true);
         });
 
@@ -41,6 +49,10 @@ export default function Game() {
             setAnswer(false);
             setAnswered(false);
             setCorrect(false);
+        });
+
+        socket.on("results_room", data => {
+            navigate(`/results/${data.room}`);
         });
 
         return;
@@ -70,6 +82,20 @@ export default function Game() {
     
     return (
         <View style={styles.game}>
+
+            {
+                ranking &&
+                <View style={styles.ranking}>
+                    <Ranking players={players} visible={ranking} />
+                </View>
+            }
+
+            {
+                answer &&
+                <Pressable onPress={() => setRanking(!ranking)}>
+                    <Image style={styles.rankingImage} source={require("../assets/ranking.png")} />
+                </Pressable>
+            }
 
             <View>
                 <View style={styles.image}>
@@ -159,6 +185,27 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         height: "100%"
+    },
+
+    ranking: {
+        position: "absolute",
+        top: 80,
+        left: 0,
+        zIndex: 1000,
+    },
+    rankingButton: {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        zIndex: 10000
+    },
+    rankingImage: {
+        height: 30,
+        width: 30,
+        borderRadius: 50,
+        backgroundColor: "#333333",
+        borderWidth: 2,
+        borderColor: "gold"
     },
 
     image: {

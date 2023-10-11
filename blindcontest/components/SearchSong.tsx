@@ -1,23 +1,37 @@
+import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { socket } from "../server/Server";
 
-export default function SearchSong(props: any) {
-    const { song, answered, setAnswered, setMyAnswer, setCorrect } = props;
+type SearchSongsProps = {
+    song: {
+        id: string,
+        title: string,
+        artists: string[],
+        image: string
+    },
+    answered?: boolean | any,
+    setCorrect?: Dispatch<boolean> | any
+    setAnswered?: Dispatch<SetStateAction<boolean>> | any,
+    setMyAnswer?: Dispatch<SetStateAction<boolean>> | any,
+};
+
+export default function SearchSong({ song, answered, setAnswered, setMyAnswer, setCorrect }: SearchSongsProps) {
     const { id, title, artists, image } = song;
 
     const onValidate = () => {
         if (!setAnswered) return;
 
         setMyAnswer(song);
+
         socket.emit("answer_room", { id: id }, (res: { correct: boolean }) => {
-            setAnswered(true);            
-            setCorrect(res.correct);
+            setAnswered(true);
+            setCorrect(res.correct as boolean);
         });
     };
 
     return (
         <Pressable onPress={onValidate}>
-            <View style={{...styles.song, backgroundColor: answered ? "grey" : ""}}>
+            <View style={{...styles.song, backgroundColor: answered ? "grey" : "#111111"}}>
                 <Image style={styles.songImg} source={{uri: image}} />
                 <View style={styles.songText}>
                     <Text style={styles.songTitle}>{title}</Text>

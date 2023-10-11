@@ -1,9 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { StyleSheet, View, Text, Image, Pressable, ScrollView } from "react-native";
 import { socket } from "../server/Server";
 
-function CardCategory(props: any) {
-    const { id, name, image, activeCategories, setActiveCategories } = props;
+type CategoryProps = {
+    activeCategories: string[],
+    setActiveCategories: Dispatch<SetStateAction<string[]>>
+};
+
+type CardCategoryProps = {
+    id: string,
+    name: string,
+    image: string,
+    activeCategories: string[],
+    setActiveCategories: Dispatch<SetStateAction<string[]>>
+};
+
+function CardCategory({ id, name, image, activeCategories, setActiveCategories }: CardCategoryProps) {
     const [active, setActive] = useState<boolean>(false);
 
     const toggleCategory = () => {
@@ -27,8 +39,7 @@ function CardCategory(props: any) {
     );
 };
 
-export default function Category(props: any) {
-    const { activeCategories, setActiveCategories } = props;
+export default function Category({ activeCategories, setActiveCategories }: CategoryProps) {
     const [categories, setCategories] = useState<any[]>([]);
 
     useEffect(() => {

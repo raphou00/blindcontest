@@ -20,6 +20,7 @@ export const rooms = [];
 const getPlayersRoom = room => {
     for (const e of rooms) {
         if (e.key == room) {
+            e.playerSort();
             return e.players
         }
     }
@@ -146,7 +147,8 @@ io.on("connection", socket => {
     socket.on("audio_room", () => {
         for (const e of rooms) {
             if (e.key == socket.room) {
-                io.to(socket.room).emit("audio_room", { audio: e.question[e.currentQuestion].href, cheat: e.question[e.currentQuestion] });
+                if (e.currentQuestion == e.nbrQuestions) io.to(socket.room).emit("results_room", { room: socket.room });
+                else io.to(socket.room).emit("audio_room", { audio: e.question[e.currentQuestion].href, cheat: e.question[e.currentQuestion] });
             }
         }
     });

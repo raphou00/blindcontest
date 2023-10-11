@@ -1,43 +1,36 @@
 import { StyleSheet, View, Text } from "react-native";
 
-type PlayerListProps = {
-    players: any[]
+type RankingProps = {
+    players: any[],
+    visible: boolean
 };
 
-export default function PlayerList({ players }: PlayerListProps) {
+export default function Ranking({ players, visible }: RankingProps) {
     return (
-        <View style={styles.players}>
-            <View style={styles.playersTitle}>
-                <Text style={styles.playersTitleText}>joueurs ({players.length})</Text>
+        <View style={{...styles.ranking, display: visible ? "flex" : "none"}}>
+            <View style={styles.rankingTitle}>
+                <Text style={styles.rankingTitleText}>classement ({players.length})</Text>
             </View>
-            <View style={styles.playersList}>
+            <View style={styles.rankingList}>
                 {
-                    players.length === 0 ? <Text style={styles.playersListNoPlayer}>Aucun joueur pour le moment</Text> :
-                    players.map((e: any) => <Text key={e.id} style={styles.playersListName}>{e.name}</Text>)
+                    players.map((e: any, idx: number) => <Text key={e.id} style={{...styles.rankingListName, color: idx == 0 ? "gold" : "white"}}>{e.name} - {e.point}</Text>)
                 }
             </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
-    players: {
-        backgroundColor: "#111111",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "50%",
+    ranking: {
         width: 300,
-        borderWidth: 2,
+        height: 500,
         borderStyle: "solid",
+        borderWidth: 2,
         borderColor: "#213547",
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-        borderBottomRightRadius: 6,
-        borderBottomLeftRadius: 6,
-        overflow: "hidden"
+        borderRadius: 6,
+        backgroundColor: "#111111"
     },
-    playersTitle: {
+    rankingTitle: {
         width: "100%",
         height: "10%",
         borderBottomWidth: 3,
@@ -47,25 +40,25 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row"
     },
-    playersTitleText: {
+    rankingTitleText: {
         display: "flex",
         textTransform: "uppercase",
         fontSize: 20,
         fontWeight: "bold",
         color: "#F9F9F9"
     },
-    playersTitleNbr: {
+    rankingTitleNbr: {
         paddingLeft: 10,
         fontSize: 16,
         fontWeight: "bold",
         color: "#646CFF"
     },
-    playersList: {
+    rankingList: {
         overflowY: "scroll",
         width: "100%",
         height: "90%"
     },
-    playersListNoPlayer: {
+    rankingListNoPlayer: {
         width: "100%",
         height: 30,
         color: "#FFFFFF",
@@ -73,7 +66,7 @@ const styles = StyleSheet.create({
         padding: 5,
         textAlign: "center"
     },
-    playersListName: {
+    rankingListName: {
         width: "90%",
         marginTop: 0,
         marginRight: "auto",
