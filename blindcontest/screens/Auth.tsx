@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Image, Pressable } from "react-native";
-import supabase from "../helpers/db";
+import supabase from "../helpers/supabase";
 import gstyles from "../components/Styles";
+import Back from "../components/Back";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -99,7 +100,7 @@ function Register() {
             </View>
 
             <Pressable style={gstyles.button} onPress={submit}>
-                <Text style={gstyles.buttonText}>Se connecter</Text>
+                <Text style={gstyles.buttonText}>S'inscrire</Text>
             </Pressable>
         </>
     );
@@ -114,7 +115,7 @@ function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login
     }
 
     return (
-        <>
+        <View style={styles.buttons}>
             <Pressable style={gstyles.button} onPress={google}>
                 <Text style={gstyles.buttonText}>Google</Text>
             </Pressable>
@@ -124,9 +125,9 @@ function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login
             </Pressable>
 
             <Pressable style={gstyles.button} onPress={() => setPage("register")}>
-                <Text style={gstyles.buttonText}>Inscrpition</Text>
+                <Text style={gstyles.buttonText}>Inscription</Text>
             </Pressable>
-        </>
+        </View>
     );
 }
 
@@ -136,7 +137,16 @@ export default function Auth() {
     return (
         <>
             <View style={styles.form}>
-                <Image source={require("../assets/blindcontest.png")} width={50} height={50} />
+                {
+                    page !== "home" &&
+                    <Back title="compte" onPress={() => setPage("home")} />
+                }
+
+                <Text style={styles.title}>
+                    { page === "login" && "Connexion" }
+                    { page === "register" && "Inscription" }
+                    { page === "home" && "Compte" }
+                </Text>
 
                 { page === "home" && <Home setPage={setPage} /> }
                 { page === "login" && <Login /> }
@@ -147,13 +157,31 @@ export default function Auth() {
 }
 
 const styles = StyleSheet.create({
+    title: {
+        fontSize: 45,
+        fontWeight: "bold",
+        color: "#FFF",
+        textAlign: "center",
+        marginBottom: 50
+    },
+    buttons: {
+        width: 300,
+        gap: 10
+    },
     form: {
-
+        padding: 10,
+        borderStyle: "solid",
+        borderWidth: 2,
+        borderRadius: 6,
+        borderColor: "#646CFF",
+        backgroundColor: "#111"
     },
     fieldBox: {
-
+        marginBottom: 10
     },
     label: {
-
+        color: "#FFF",
+        fontWeight: "bold",
+        fontSize: 20
     }
 });

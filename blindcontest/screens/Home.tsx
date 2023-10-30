@@ -1,8 +1,12 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Link } from "react-router-native";
 import gstyles from "../components/Styles";
+import { useAuth } from "../components/AuthProvider";
 
 export default function Home() {
+    const { user } = useAuth();
+    console.log(user);
+    
     return (
         <>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
@@ -20,11 +24,14 @@ export default function Home() {
                         <Text style={gstyles.buttonText}>Créer une partie</Text>
                     </Link>
                 </View>
+
+                <View style={gstyles.button}>
+                    <Link to="/auth" underlayColor={"transparent"}>
+                        <Text style={gstyles.buttonText}>Compte</Text>
+                    </Link>
+                </View>
             </View>
 
-            <Link to="/auth" style={gstyles.button}>
-                <Text style={gstyles.buttonText}>Compte</Text>
-            </Link>
         </>
     );
 };
