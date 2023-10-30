@@ -1,6 +1,6 @@
 import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { StyleSheet, View, Text, Image, Pressable, ScrollView } from "react-native";
-import { socket } from "../server/Server";
+import { socket } from "../helpers/server";
 
 type CategoryProps = {
     activeCategories: string[],

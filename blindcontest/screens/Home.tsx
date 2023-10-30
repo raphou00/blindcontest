@@ -21,6 +21,10 @@ export default function Home() {
                     </Link>
                 </View>
             </View>
+
+            <Link to="/auth" style={gstyles.button}>
+                <Text style={gstyles.buttonText}>Compte</Text>
+            </Link>
         </>
     );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Link, useParams } from "react-router-native";
-import { socket } from "../server/Server";
+import { socket } from "../helpers/server";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 
