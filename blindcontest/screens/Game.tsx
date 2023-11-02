@@ -99,7 +99,13 @@ export default function Game({ navigation, route }: { navigation: any, route: an
                 <View>
                     <View style={styles.image}>
                         {
-                            answer ? <Image style={styles.imageResponse} source={{uri: answer.image}} /> : <Text style={styles.imageText}>?</Text>
+                            answer ? (
+                                <Image style={styles.imageResponse} source={{uri: answer.image}} />
+                            ) : (
+                                <View style={styles.imageTextContainer}>
+                                    <Text style={styles.imageText}>?</Text>
+                                </View>
+                            )
                         }
                     </View>
 
@@ -216,14 +222,18 @@ const styles = StyleSheet.create({
         marginRight: "auto",
         overflow: "hidden"
     },
-    imageText: {
-        fontSize: 50,
+    imageTextContainer: {
         height: 300,
         width: 300,
-        backgroundColor: "#333333",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#333333"
+    },
+    imageText: {
+        fontSize: 50,
         color: "#CCC",
         fontWeight: "bold",
-        flex: 1
     },
     imageResponse: {
         width: 300,

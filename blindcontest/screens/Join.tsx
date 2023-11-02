@@ -13,8 +13,8 @@ export default function Join({ navigation }: { navigation: any }) {
             return;
         }
 
-        socket.emit("check_room", { room: room });
-        socket.on("check_room", data => {
+        socket.emit("check_key", { room: room });
+        socket.on("check_key", data => {
             if (data.access) navigation.navigate("lobby", { room: room, host: false });
             else alert("Vous ne pouvez pas rejoindre cette partie");
         });

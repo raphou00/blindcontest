@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Link } from "@react-navigation/native";
+import { useAuth } from "../helpers/auth-provider";
 import { socket } from "../helpers/server";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
-import { Link } from "@react-navigation/native";
 import Layout from "../components/Layout";
+import supabase from "../helpers/supabase";
 
 export default function Results({ route }: { route: any }) {
+    const { user } = useAuth();
     const [players, setPlayers] = useState<any[]>([]);
     const { room } = route.params;
     
@@ -15,12 +18,30 @@ export default function Results({ route }: { route: any }) {
         socket.on("players", data => setPlayers(data.players));
 
         return;
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            if (!user) return;
+            
+            for (const p of players) {
+                if (p.id === socket.id) {
+                    await supabase.auth.updateUser({
+                        data: {
+                            point: user?.user_metadata.point + p.point
+                        }
+                    });
+                }
+            }
+        })();
+
+        return;
+    }, [players]);
 
     return (
         <Layout>
             <View style={styles.ranking}>
-                <Link to="/" style={{...gstyles.button, width: 300}}>
+                <Link to="/home" style={{...gstyles.button, width: 300}}>
                     <Text style={gstyles.buttonText}>Accueil</Text>
                 </Link>
 
@@ -30,7 +51,6 @@ export default function Results({ route }: { route: any }) {
                         <Text style={{color: "gold"}}>{players[0].name}</Text> - {players[0].point}
                     </Text>
                 }
-
                 
                 <View>
                     <Ranking players={players} visible={true} />

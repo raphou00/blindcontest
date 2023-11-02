@@ -63,7 +63,12 @@ function Register({ navigation }: any) {
 
         const { error } = await supabase.auth.signUp({
             email,
-            password
+            password,
+            options: {
+                data: {
+                    point: 0
+                }
+            }
         });
 
         if (error) alert("Inscription échouée");

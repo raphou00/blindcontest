@@ -20,7 +20,7 @@ export default function Create({ navigation }: { navigation: any }) {
 
     const onCreate = () => {        
         socket.emit("update_room", {
-            room: room,
+            key: room,
             time: Number.parseInt(time),
             nbrQuestions: Number.parseInt(nbrQuestions),
             categories: activeCategories
