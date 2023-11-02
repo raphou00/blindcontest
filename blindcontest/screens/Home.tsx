@@ -1,13 +1,9 @@
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Link } from "@react-navigation/native";
-import gstyles from "../components/Styles";
-import { useAuth } from "../helpers/auth-provider";
 import Layout from "../components/Layout";
+import gstyles from "../components/Styles";
 
-export default function Home() {
-    const { user } = useAuth();
-    console.log(user);
-    
+export default function Home() {    
     return (
         <Layout>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />

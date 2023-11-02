@@ -5,17 +5,17 @@ import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
 export default function Join({ navigation }: { navigation: any }) {
-    const [key, setKey] = useState<string>("");
+    const [room, setRoom] = useState<string>("");
 
     const login = async () => {
-        if (!key) {
+        if (!room) {
             alert("Veuillez entrer une clé de partie.");
             return;
         }
 
-        socket.emit("check_key", { key: key });
-        socket.on("check_key", data => {
-            if (data.access) navigation.navigate("lobby", { room: data.key, host: false });
+        socket.emit("check_room", { room: room });
+        socket.on("check_room", data => {
+            if (data.access) navigation.navigate("lobby", { room: room, host: false });
             else alert("Vous ne pouvez pas rejoindre cette partie");
         });
     };
@@ -26,7 +26,7 @@ export default function Join({ navigation }: { navigation: any }) {
             <Text style={styles.homeTitle}>blind contest</Text>
             
             <View style={styles.homeButtons}>
-                <TextInput style={gstyles.input} value={key} onChangeText={setKey} inputMode="search" onSubmitEditing={login} placeholder="Clé..." />
+                <TextInput style={gstyles.input} value={room} onChangeText={setRoom} inputMode="search" onSubmitEditing={login} placeholder="Clé..." />
 
                 <Pressable style={gstyles.button} onPress={login}>
                     <Text style={gstyles.buttonText}>Rejoindre la partie</Text>

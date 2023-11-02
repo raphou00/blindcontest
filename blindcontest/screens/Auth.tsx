@@ -50,7 +50,7 @@ function Login({ navigation }: any) {
     );
 }
 
-function Register() {
+function Register({ navigation }: any) {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [passwordConfirm, setPasswordConfirm] = useState<string>("");
@@ -68,6 +68,8 @@ function Register() {
 
         if (error) alert("Inscription échouée");
         else alert("Inscription réussie");
+
+        navigation.navigate("home");
     }
 
     return (
@@ -123,7 +125,7 @@ function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login
     );
 }
 
-export default function Auth() {
+export default function Auth({ navigation }: any) {
     const [page, setPage] = useState<"login" | "register" | "home">("home");
 
     return (
@@ -141,8 +143,8 @@ export default function Auth() {
                 </Text>
 
                 { page === "home" && <Home setPage={setPage} /> }
-                { page === "login" && <Login /> }
-                { page === "register" && <Register /> }
+                { page === "login" && <Login navigation={navigation} /> }
+                { page === "register" && <Register navigation={navigation} /> }
             </View>
         </Layout>
     );

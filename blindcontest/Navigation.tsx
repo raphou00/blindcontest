@@ -22,8 +22,6 @@ const setScreenOptions = (title: string, Icon: any) => Object({
 
 export default function Navigation() {
     const { user } = useAuth();
-
-    console.log(user);
     
     return (
         <NavigationContainer theme={DarkTheme}>
@@ -33,9 +31,9 @@ export default function Navigation() {
                 <Tab.Screen name="join" component={Join} options={setScreenOptions("Rejoindre", FaPlay)} />
                 <Tab.Screen name="auth" component={user ? Profil : Auth} options={setScreenOptions(user ? "Profil" : "Connexion", FaUser)} />
 
-                <Tab.Screen name="lobby" component={Lobby} options={{tabBarButton: () => <></>}} />
-                <Tab.Screen name="game" component={Game} options={{tabBarButton: () => <></>}} />
-                <Tab.Screen name="results" component={Results} options={{tabBarButton: () => <></>}} />
+                <Tab.Screen name="lobby" component={Lobby} options={{ title: "Joueurs", tabBarButton: () => <></> }} />
+                <Tab.Screen name="game" component={Game} options={{ title: "Jeu", tabBarButton: () => <></> }} />
+                <Tab.Screen name="results" component={Results} options={{ title: "Résultats", tabBarButton: () => <></> }} />
             </Tab.Navigator>
         </NavigationContainer>
     );

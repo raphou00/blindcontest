@@ -6,31 +6,30 @@ import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
 export default function Create({ navigation }: { navigation: any }) {
-    const [key, setKey] = useState<string>("");
+    const [room, setRoom] = useState<string>("");
     const [activeCategories, setActiveCategories] = useState<any[]>([]);
     const [time, setTime] = useState<string>("20");
     const [nbrQuestions, setNbrQuestions] = useState<string>("20");
     
     useEffect(() => {
         socket.emit("create_room");
-        socket.on("create_room", data => setKey(data.key));
+        socket.on("create_room", data => setRoom(data.key));
         
         return;
     }, []);
 
     const onCreate = () => {        
         socket.emit("update_room", {
-            key: key,
+            room: room,
             time: Number.parseInt(time),
             nbrQuestions: Number.parseInt(nbrQuestions),
             categories: activeCategories
-        }, () => navigation.navigate("lobby", { key: key, host: true }));
+        }, () => navigation.navigate("lobby", { room: room, host: true }));
     }
 
     return (
         <Layout>
-            <Text style={styles.createTitle}>{"#" + key}</Text>
-
+            <Text style={styles.createTitle}>{"#" + room}</Text>
 
             <View style={styles.createBox}>
                 <Text style={styles.createBoxTitle}>Catégories</Text>

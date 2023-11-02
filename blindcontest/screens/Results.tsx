@@ -4,6 +4,7 @@ import { socket } from "../helpers/server";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 import { Link } from "@react-navigation/native";
+import Layout from "../components/Layout";
 
 export default function Results({ route }: { route: any }) {
     const [players, setPlayers] = useState<any[]>([]);
@@ -17,23 +18,25 @@ export default function Results({ route }: { route: any }) {
     }, [])
 
     return (
-        <View style={styles.ranking}>
-            <Link to="/" style={{...gstyles.button, width: 300}}>
-                <Text style={gstyles.buttonText}>Accueil</Text>
-            </Link>
+        <Layout>
+            <View style={styles.ranking}>
+                <Link to="/" style={{...gstyles.button, width: 300}}>
+                    <Text style={gstyles.buttonText}>Accueil</Text>
+                </Link>
 
-            {
-                players.length > 0 &&
-                <Text style={styles.winner}>
-                    <Text style={{color: "gold"}}>{players[0].name}</Text> - {players[0].point}
-                </Text>
-            }
+                {
+                    players.length > 0 &&
+                    <Text style={styles.winner}>
+                        <Text style={{color: "gold"}}>{players[0].name}</Text> - {players[0].point}
+                    </Text>
+                }
 
-            
-            <View>
-                <Ranking players={players} visible={true} />
+                
+                <View>
+                    <Ranking players={players} visible={true} />
+                </View>
             </View>
-        </View>
+        </Layout>
     );
 }
 
