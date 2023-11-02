@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
 import { useNavigate, useParams, useSearchParams } from "react-router-native";
-import { socket } from "../server/Server";
+import { socket } from "../helpers/server";
 import PlayerList from "../components/PlayerList";
 import gstyles from "../components/Styles";
 

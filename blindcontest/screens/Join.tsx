@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
 import { NavigateFunction, useNavigate } from "react-router-native";
-import { socket } from "../server/Server";
+import { socket } from "../helpers/server";
 import gstyles from "../components/Styles";
 
 export default function Join() {
