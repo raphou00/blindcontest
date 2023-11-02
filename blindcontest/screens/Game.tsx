@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
-import { useNavigate, useSearchParams, NavigateFunction } from "react-router-native";
 import { Audio } from "expo-av";
 import { socket } from "../helpers/server";
 import { searchSongs } from "../helpers/search";
 import SearchSong from "../components/SearchSong";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
+import Layout from "../components/Layout";
 
 const soundObject: Audio.Sound = new Audio.Sound();
 
-export default function Game() {
+export default function Game({ navigation, route }: { navigation: any, route: any }) {
     const [players, setPlayers] = useState<any[]>([]);
     const [ranking, setRanking] = useState<boolean>(false);
     const [songs, setSongs] = useState<any[]>([]);
@@ -19,9 +19,7 @@ export default function Game() {
     const [answered, setAnswered] = useState<boolean>(false);
     const [correct, setCorrect] = useState<boolean>(false);
     const [search, setSearch] = useState<any>("");
-    const [searchParams] = useSearchParams();
-    const host: boolean = searchParams.get("host") == "true" ? true : false;
-    const navigate: NavigateFunction = useNavigate();
+    const { room, host } = route.params
 
     useEffect(() => {
         onChangeSearch("Taylor");
@@ -51,8 +49,8 @@ export default function Game() {
             setCorrect(false);
         });
 
-        socket.on("results_room", data => {
-            navigate(`/results/${data.room}`);
+        socket.on("results_room", () => {
+            navigation.navigate("results", { room: room });
         });
 
         return;
@@ -81,100 +79,102 @@ export default function Game() {
     }
     
     return (
-        <View style={styles.game}>
+        <Layout>
+            <View style={styles.game}>
 
-            {
-                ranking &&
-                <View style={styles.ranking}>
-                    <Ranking players={players} visible={ranking} />
-                </View>
-            }
-
-            {
-                answer &&
-                <Pressable onPress={() => setRanking(!ranking)}>
-                    <Image style={styles.rankingImage} source={require("../assets/ranking.png")} />
-                </Pressable>
-            }
-
-            <View>
-                <View style={styles.image}>
-                    {
-                        answer ? <Image style={styles.imageResponse} source={{uri: answer.image}} /> : <Text style={styles.imageText}>?</Text>
-                    }
-                </View>
+                {
+                    ranking &&
+                    <View style={styles.ranking}>
+                        <Ranking players={players} visible={ranking} />
+                    </View>
+                }
 
                 {
                     answer &&
-                    <>
-                        <Text style={styles.titleResponse}>{answer.name}</Text>
-                        <Text style={styles.artistsResponse}>{answer.artists.join(", ")}</Text>
-                    </>
+                    <Pressable onPress={() => setRanking(!ranking)}>
+                        <Image style={styles.rankingImage} source={require("../assets/ranking.png")} />
+                    </Pressable>
                 }
-            </View>
 
-
-            {
-                answered &&
-                <>
-                    <View style={styles.result}>
-                            {
-                                answer ?
-                                <View style={styles.resultBox}>
-                                    <Image style={styles.resultImg} source={correct ? require(`../assets/correct.png`) : require(`../assets/incorrect.png`)} />
-                                    <Text style={styles.resultText}>{correct ? "Correcte" : "Incorrecte"}</Text>
-                                </View>
-                                :
-                                <Text style={styles.resultTitle}>En attente du résultat</Text>
-                            }
+                <View>
+                    <View style={styles.image}>
+                        {
+                            answer ? <Image style={styles.imageResponse} source={{uri: answer.image}} /> : <Text style={styles.imageText}>?</Text>
+                        }
                     </View>
 
                     {
-                        myAnswer &&
-                        <View style={{marginTop: 10, gap: 10}}>
-                            <Text style={styles.resultTitle}>Votre réponse</Text>
-                            <SearchSong song={myAnswer} />
-                        </View>
+                        answer &&
+                        <>
+                            <Text style={styles.titleResponse}>{answer.name}</Text>
+                            <Text style={styles.artistsResponse}>{answer.artists.join(", ")}</Text>
+                        </>
                     }
-                </>
-            }
+                </View>
 
 
-            {
-                answer ?
-                <>
-                    {
-                        host &&
-                        <Pressable style={{...gstyles.button, width: 300, marginTop: 10}} onPress={nextQuestion}>
-                            <Text style={gstyles.buttonText}>Suivant</Text>
-                        </Pressable>
-                    }
-                </>
-                :
-                <>
-                    {
-                        !myAnswer &&
-                        <View style={styles.search}>
-                            <Text style={styles.searchTitle}>Trouve la musique</Text>
-                            <TextInput style={[gstyles.input, styles.searchInput]} value={search} onChangeText={onChangeSearch} placeholder="Rechercher une musique..." />
-                            
-                            <View style={{...styles.songContainer, marginTop: songs.length > 0 ? 10 : 0}}>
+                {
+                    answered &&
+                    <>
+                        <View style={styles.result}>
                                 {
-                                    songs.map((e: any) => <SearchSong
-                                                            key={e.id}
-                                                            song={e}
-                                                            answered={answered}
-                                                            setAnswered={setAnswered}
-                                                            setMyAnswer={setMyAnswer}
-                                                            setCorrect={setCorrect}
-                                                            />)
+                                    answer ?
+                                    <View style={styles.resultBox}>
+                                        <Image style={styles.resultImg} source={correct ? require(`../assets/correct.png`) : require(`../assets/incorrect.png`)} />
+                                        <Text style={styles.resultText}>{correct ? "Correcte" : "Incorrecte"}</Text>
+                                    </View>
+                                    :
+                                    <Text style={styles.resultTitle}>En attente du résultat</Text>
                                 }
-                            </View>
                         </View>
-                    }
-                </>
-            }
-        </View>
+
+                        {
+                            myAnswer &&
+                            <View style={{marginTop: 10, gap: 10}}>
+                                <Text style={styles.resultTitle}>Votre réponse</Text>
+                                <SearchSong song={myAnswer} />
+                            </View>
+                        }
+                    </>
+                }
+
+
+                {
+                    answer ?
+                    <>
+                        {
+                            host &&
+                            <Pressable style={{...gstyles.button, width: 300, marginTop: 10}} onPress={nextQuestion}>
+                                <Text style={gstyles.buttonText}>Suivant</Text>
+                            </Pressable>
+                        }
+                    </>
+                    :
+                    <>
+                        {
+                            !myAnswer &&
+                            <View style={styles.search}>
+                                <Text style={styles.searchTitle}>Trouve la musique</Text>
+                                <TextInput style={[gstyles.input, styles.searchInput]} value={search} onChangeText={onChangeSearch} placeholder="Rechercher une musique..." />
+                                
+                                <View style={{...styles.songContainer, marginTop: songs.length > 0 ? 10 : 0}}>
+                                    {
+                                        songs.map((e: any) => <SearchSong
+                                        key={e.id}
+                                        song={e}
+                                        answered={answered}
+                                        setAnswered={setAnswered}
+                                        setMyAnswer={setMyAnswer}
+                                        setCorrect={setCorrect}
+                                        />)
+                                    }
+                                </View>
+                            </View>
+                        }
+                    </>
+                }
+            </View>
+        </Layout>
     );
 };
 

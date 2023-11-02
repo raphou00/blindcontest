@@ -1,16 +1,21 @@
+import { FaChevronLeft } from "react-icons/fa6";
 import { StyleSheet, Text, Pressable } from "react-native";
 
-export default function Back({ title, onPress }: { title: string, onPress: () => void }) {
+export default function Back({ onPress }: { onPress: () => void }) {
     return (
         <Pressable style={styles.button} onPress={onPress}>
-            <Text style={styles.buttonText}>{ title }</Text>
+            <Text style={styles.buttonText}><FaChevronLeft /></Text>
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     button: {
-        padding: 5,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 30,
+        height: 30,
         borderStyle: "solid",
         borderWidth: 1,
         borderRadius: 6,

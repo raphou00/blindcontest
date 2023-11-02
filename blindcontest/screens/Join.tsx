@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
-import { NavigateFunction, useNavigate } from "react-router-native";
 import { socket } from "../helpers/server";
 import gstyles from "../components/Styles";
+import Layout from "../components/Layout";
 
-export default function Join() {
+export default function Join({ navigation }: { navigation: any }) {
     const [key, setKey] = useState<string>("");
-    const navigate: NavigateFunction = useNavigate();
 
     const login = async () => {
         if (!key) {
@@ -16,13 +15,13 @@ export default function Join() {
 
         socket.emit("check_key", { key: key });
         socket.on("check_key", data => {
-            if (data.access) return navigate("/lobby/" + data.key);
+            if (data.access) navigation.navigate("lobby", { room: data.key, host: false });
             else alert("Vous ne pouvez pas rejoindre cette partie");
         });
     };
 
     return (
-        <>
+        <Layout>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
             <Text style={styles.homeTitle}>blind contest</Text>
             
@@ -33,7 +32,7 @@ export default function Join() {
                     <Text style={gstyles.buttonText}>Rejoindre la partie</Text>
                 </Pressable>
             </View>
-        </>
+        </Layout>
     );
 };
 

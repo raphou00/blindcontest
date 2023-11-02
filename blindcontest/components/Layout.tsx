@@ -1,29 +1,18 @@
-import { StyleSheet, View, ImageBackground } from "react-native";
-import { NavigateFunction, Outlet, useLocation, useNavigate, Location } from "react-router-native";
-import Back from "./Back";
+import { StyleSheet, View } from "react-native";
 
-export default function Layout() {
-    const navigate: NavigateFunction = useNavigate();
-    const location: Location = useLocation();
-
+export default function Layout({ children }: { children: any }) {
     return (
-        <ImageBackground source={require("../assets/background.jpg")} resizeMode="cover" style={{width: "100%", height: "100%"}}>
-            <View style={{ margin: 5 }}>
-                { location.pathname !== "/" && <Back title="accueil" onPress={() => navigate("/")} /> }
-            </View>
-
-            <View style={styles.main}>
-                <Outlet />
-            </View>
-        </ImageBackground>
+        <View style={styles.container}>
+            { children }
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
-    main: {
-        display: "flex",
-        alignItems: "center",
+    container: {
+        flex: 1,
         justifyContent: "center",
-        height: "100%",
+        alignItems: "center",
+        paddingTop: 10
     }
 });

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Link, useParams } from "react-router-native";
 import { socket } from "../helpers/server";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
+import { Link } from "@react-navigation/native";
 
-export default function Results() {
+export default function Results({ route }: { route: any }) {
     const [players, setPlayers] = useState<any[]>([]);
-    const { room } = useParams<{room: string}>();
+    const { room } = route.params;
     
     useEffect(() => {
         socket.emit("players", { room: room });

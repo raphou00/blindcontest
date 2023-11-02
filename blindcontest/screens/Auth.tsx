@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import supabase from "../helpers/supabase";
-import gstyles from "../components/Styles";
+import Layout from "../components/Layout";
 import Back from "../components/Back";
+import gstyles from "../components/Styles";
 
-function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+function Login({ navigation }: any) {
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const submit = async () => {
         const { error } = await supabase.auth.signInWithPassword({
@@ -16,6 +17,8 @@ function Login() {
 
         if (error) alert("Connexion échouée");
         else  alert("Connexion réussie");
+
+        navigation.navigate("home");
     }
 
     return (
@@ -48,9 +51,9 @@ function Login() {
 }
 
 function Register() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordConfirm, setPasswordConfirm] = useState<string>("");
 
     const submit = async () => {
         if (password !== passwordConfirm) {
@@ -64,7 +67,7 @@ function Register() {
         });
 
         if (error) alert("Inscription échouée");
-        else  alert("Inscription réussie");
+        else alert("Inscription réussie");
     }
 
     return (
@@ -107,19 +110,8 @@ function Register() {
 }
 
 function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login" | "register" | "home">> }) {
-    const google = async () => {
-        const { error } = await supabase.auth.signInWithOAuth({ provider: "google" });
-
-        if (error) alert("Connexion échouée");
-        else  alert("Connexion réussie");
-    }
-
     return (
         <View style={styles.buttons}>
-            <Pressable style={gstyles.button} onPress={google}>
-                <Text style={gstyles.buttonText}>Google</Text>
-            </Pressable>
-
             <Pressable style={gstyles.button} onPress={() => setPage("login")}>
                 <Text style={gstyles.buttonText}>Connexion</Text>
             </Pressable>
@@ -135,11 +127,11 @@ export default function Auth() {
     const [page, setPage] = useState<"login" | "register" | "home">("home");
 
     return (
-        <>
+        <Layout>
             <View style={styles.form}>
                 {
                     page !== "home" &&
-                    <Back title="compte" onPress={() => setPage("home")} />
+                    <Back onPress={() => setPage("home")} />
                 }
 
                 <Text style={styles.title}>
@@ -152,7 +144,7 @@ export default function Auth() {
                 { page === "login" && <Login /> }
                 { page === "register" && <Register /> }
             </View>
-        </>
+        </Layout>
     );
 }
 
@@ -170,11 +162,6 @@ const styles = StyleSheet.create({
     },
     form: {
         padding: 10,
-        borderStyle: "solid",
-        borderWidth: 2,
-        borderRadius: 6,
-        borderColor: "#646CFF",
-        backgroundColor: "#111"
     },
     fieldBox: {
         marginBottom: 10

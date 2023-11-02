@@ -1,38 +1,29 @@
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Link } from "react-router-native";
+import { Link } from "@react-navigation/native";
 import gstyles from "../components/Styles";
 import { useAuth } from "../helpers/auth-provider";
+import Layout from "../components/Layout";
 
 export default function Home() {
     const { user } = useAuth();
     console.log(user);
     
     return (
-        <>
+        <Layout>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
             <Text style={styles.homeTitle}>blind contest</Text>
             
             <View style={styles.homeButtons}>
-                <View style={gstyles.button}>
-                    <Link to="/join" underlayColor={"transparent"}>
-                        <Text style={gstyles.buttonText}>Rejoindre une partie</Text>
-                    </Link>
-                </View>
+                <Link to="/join" style={gstyles.button}>
+                    <Text style={gstyles.buttonText}>Rejoindre une partie</Text>
+                </Link>
 
-                <View style={gstyles.button}>
-                    <Link to="/create" underlayColor={"transparent"}>
-                        <Text style={gstyles.buttonText}>Créer une partie</Text>
-                    </Link>
-                </View>
-
-                <View style={gstyles.button}>
-                    <Link to="/auth" underlayColor={"transparent"}>
-                        <Text style={gstyles.buttonText}>Compte</Text>
-                    </Link>
-                </View>
+                <Link to="/create" style={gstyles.button}>
+                    <Text style={gstyles.buttonText}>Créer une partie</Text>
+                </Link>
             </View>
 
-        </>
+        </Layout>
     );
 };
 

@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
-import { useNavigate, useParams, useSearchParams } from "react-router-native";
 import { socket } from "../helpers/server";
 import PlayerList from "../components/PlayerList";
 import gstyles from "../components/Styles";
+import Layout from "../components/Layout";
 
-export default function Lobby() {
+export default function Lobby({ navigation, route }: { navigation: any, route: any }) {
+    if (!route.params) return <></>;
+    const { room, host } = route.params;
     const [name, setName] = useState<string>("");
     const [logged, setLogged] = useState<boolean>(false);
     const [players, setPlayers] = useState<any[]>([]);
-    const { room } = useParams<{room: string}>();
-    const [searchParams] = useSearchParams();
-    const [host] = useState<boolean>(searchParams.get("host") == "true" ? true : false);
-    const navigate = useNavigate();
     
     useEffect(() => {
         socket.emit("join_lobby", { room: room });
@@ -20,7 +18,7 @@ export default function Lobby() {
         socket.emit("players", { room: room });
         socket.on("players", data => setPlayers(data.players));
 
-        socket.on("start_room", () => navigate("/game/" + room + (host ? "?host=true" : "")));
+        socket.on("start_room", () => navigation.navigate("game", { room, host }));
 
         return;
     }, []);
@@ -44,7 +42,7 @@ export default function Lobby() {
     }
 
     return (
-        <>
+        <Layout>
             <Text style={styles.lobbyTitle}>{"#" + room}</Text>
 
             <View style={styles.lobbyName}>
@@ -65,7 +63,7 @@ export default function Lobby() {
                         </Pressable>
                 </> : <></>
             }
-        </>
+        </Layout>
     );
 };
 

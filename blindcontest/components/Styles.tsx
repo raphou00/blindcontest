@@ -47,7 +47,8 @@ export default StyleSheet.create({
         paddingLeft: 6,
         backgroundColor: "#646CFF",
         cursor: "pointer",
-        transition: "all 0.1s"
+        transition: "all 0.1s",
+        textAlign: "center"
     },
     buttonText: {
         textAlign: "center",
