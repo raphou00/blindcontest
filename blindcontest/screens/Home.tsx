@@ -10,12 +10,17 @@ export default function Home() {
             <Text style={styles.homeTitle}>blind contest</Text>
             
             <View style={styles.homeButtons}>
-                <Link to="/join" style={gstyles.button}>
-                    <Text style={gstyles.buttonText}>Rejoindre une partie</Text>
+                <Link to="/join">
+                    <View style={{...gstyles.button, width: 300}}>
+                        <Text style={gstyles.buttonText}>Rejoindre une partie</Text>
+                    </View>
                 </Link>
 
-                <Link to="/create" style={gstyles.button}>
-                    <Text style={gstyles.buttonText}>Créer une partie</Text>
+                <Link to="/create">
+                    <Text style={gstyles.buttonText}></Text>
+                    <View style={{...gstyles.button, width: 300}}>
+                        <Text style={gstyles.buttonText}>Créer une partie</Text>
+                    </View>
                 </Link>
             </View>
 

@@ -1,6 +1,6 @@
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FaHouse, FaPenClip, FaPlay, FaUser } from "react-icons/fa6";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useAuth } from "./helpers/auth-provider";
 import Home from "./screens/Home";
 import Create from "./screens/Create";
@@ -13,10 +13,10 @@ import Profil from "./screens/Profil";
 
 const Tab = createBottomTabNavigator();
 
-const setScreenOptions = (title: string, Icon: any) => Object({
+const setScreenOptions = (title: string, name: string) => Object({
     title: title,
     tabBarActiveTintColor: "#646CFF",
-    tabBarIcon: ({ color }: any) => <Icon color={color} size={20} />,
+    tabBarIcon: ({ color }: any) => <FontAwesome5 name={name} color={color} size={20} solid />,
     tabBarLabelStyle: { fontSize: 12 }
 });
 
@@ -26,10 +26,10 @@ export default function Navigation() {
     return (
         <NavigationContainer theme={DarkTheme}>
             <Tab.Navigator initialRouteName="home">
-                <Tab.Screen name="home" component={Home} options={setScreenOptions("Accueil", FaHouse)} />
-                <Tab.Screen name="create" component={Create} options={setScreenOptions("Créer", FaPenClip)} />
-                <Tab.Screen name="join" component={Join} options={setScreenOptions("Rejoindre", FaPlay)} />
-                <Tab.Screen name="auth" component={user ? Profil : Auth} options={setScreenOptions(user ? "Profil" : "Connexion", FaUser)} />
+                <Tab.Screen name="home" component={Home} options={setScreenOptions("Accueil", "home")} />
+                <Tab.Screen name="create" component={Create} options={setScreenOptions("Créer", "pen")} />
+                <Tab.Screen name="join" component={Join} options={setScreenOptions("Rejoindre", "play")} />
+                <Tab.Screen name="auth" component={user ? Profil : Auth} options={setScreenOptions(user ? "Profil" : "Connexion", "user")} />
 
                 <Tab.Screen name="lobby" component={Lobby} options={{ title: "Joueurs", tabBarButton: () => <></> }} />
                 <Tab.Screen name="game" component={Game} options={{ title: "Jeu", tabBarButton: () => <></> }} />

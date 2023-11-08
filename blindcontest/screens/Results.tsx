@@ -41,8 +41,10 @@ export default function Results({ route }: { route: any }) {
     return (
         <Layout>
             <View style={styles.ranking}>
-                <Link to="/home" style={{...gstyles.button, width: 300}}>
-                    <Text style={gstyles.buttonText}>Accueil</Text>
+                <Link to="/home">
+                    <View style={{...gstyles.button, width: 300}}>
+                        <Text style={gstyles.buttonText}>Accueil</Text>
+                    </View>
                 </Link>
 
                 {

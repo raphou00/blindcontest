@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import supabase from "../helpers/supabase";
 import Layout from "../components/Layout";
 import Back from "../components/Back";
 import gstyles from "../components/Styles";
+import Captcha from "../components/Catpcha";
 
 function Login({ navigation }: any) {
     const [email, setEmail] = useState<string>("");
@@ -108,6 +109,10 @@ function Register({ navigation }: any) {
                     placeholder="Confirmer"
                     secureTextEntry={true} />
             </View>
+
+            {/* <View style={{flex: 1}}>
+                <Captcha />
+            </View> */}
 
             <Pressable style={gstyles.button} onPress={submit}>
                 <Text style={gstyles.buttonText}>S'inscrire</Text>

@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     categoryCardImg: {
         height: 50,
         width: 50,
-        borderRadius: 8
+        borderRadius: 6
     },
     categoryCardName: {
         color: "#FFFFFF",

@@ -16,7 +16,9 @@ export default function Profil() {
             <View style={{ gap: 50 }}>
                 <View style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <Text style={{...gstyles.buttonText, fontSize: 30}}>Vos points :</Text>
-                    <Text style={styles.point}>{user?.user_metadata.point}</Text>
+                    <View style={styles.point}>
+                        <Text style={styles.pointText}>{user?.user_metadata.point}</Text>
+                    </View>
                 </View>
 
                 <View>
@@ -34,9 +36,6 @@ export default function Profil() {
 
 const styles = StyleSheet.create({
     point: {
-        fontSize: 100,
-        fontWeight: "bold",
-        color: "#646CFF",
         padding: 10,
         borderWidth: 2,
         borderRadius: 100,
@@ -46,5 +45,10 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
+    },
+    pointText: {
+        fontSize: 100,
+        fontWeight: "bold",
+        color: "#646CFF",
     }
 });
