@@ -12,17 +12,18 @@ const soundObject: Audio.Sound = new Audio.Sound();
 
 export default function Game({ navigation, route }: { navigation: any, route: any }) {
     const [players, setPlayers] = useState<any[]>([]);
-    const [ranking, setRanking] = useState<boolean>(false);
     const [songs, setSongs] = useState<any[]>([]);
-    const [answer, setAnswer] = useState<any>(false);
+    const [answer, setAnswer] = useState<any>(null);
     const [myAnswer, setMyAnswer] = useState<any>(null);
+    const [search, setSearch] = useState<string>("");
     const [answered, setAnswered] = useState<boolean>(false);
     const [correct, setCorrect] = useState<boolean>(false);
-    const [search, setSearch] = useState<any>("");
-    const { room, host } = route.params
+    const [rankingVisible, setRankingVisible] = useState<boolean>(false);
+
+    const { room, host } = route.params;
 
     useEffect(() => {
-        onChangeSearch("Taylor");
+        onChangeSearch("Taylor Swift");
         setSearch("");
 
         if (host) {
@@ -30,6 +31,7 @@ export default function Game({ navigation, route }: { navigation: any, route: an
         }
 
         socket.on("audio_room", data => {
+            setRankingVisible(false);
             playSong(data.audio);
             console.log(data.cheat);
         });
@@ -41,7 +43,7 @@ export default function Game({ navigation, route }: { navigation: any, route: an
         });
 
         socket.on("next_room", () => {
-            onChangeSearch("Taylor");
+            onChangeSearch("Taylor Swift");
             setSearch("");
             setMyAnswer(null);
             setAnswer(false);
@@ -83,15 +85,15 @@ export default function Game({ navigation, route }: { navigation: any, route: an
             <View style={styles.game}>
 
                 {
-                    ranking &&
+                    rankingVisible &&
                     <View style={styles.ranking}>
-                        <Ranking players={players} visible={ranking} />
+                        <Ranking players={players} visible={rankingVisible} />
                     </View>
                 }
 
                 {
                     answer &&
-                    <Pressable onPress={() => setRanking(!ranking)}>
+                    <Pressable onPress={() => setRankingVisible(!rankingVisible)}>
                         <Image style={styles.rankingImage} source={require("../assets/ranking.png")} />
                     </Pressable>
                 }
@@ -100,7 +102,7 @@ export default function Game({ navigation, route }: { navigation: any, route: an
                     <View style={styles.image}>
                         {
                             answer ? (
-                                <Image style={styles.imageResponse} source={{uri: answer.image}} />
+                                <Image style={styles.imageResponse} source={{ uri: answer.image }} />
                             ) : (
                                 <View style={styles.imageTextContainer}>
                                     <Text style={styles.imageText}>?</Text>
@@ -126,7 +128,7 @@ export default function Game({ navigation, route }: { navigation: any, route: an
                                 {
                                     answer ?
                                     <View style={styles.resultBox}>
-                                        <Image style={styles.resultImg} source={correct ? require(`../assets/correct.png`) : require(`../assets/incorrect.png`)} />
+                                        <Image style={styles.resultImg} source={correct ? require("../assets/correct.png") : require("../assets/incorrect.png")} />
                                         <Text style={styles.resultText}>{correct ? "Correcte" : "Incorrecte"}</Text>
                                     </View>
                                     :
@@ -165,14 +167,15 @@ export default function Game({ navigation, route }: { navigation: any, route: an
                                 
                                 <View style={{...styles.songContainer, marginTop: songs.length > 0 ? 10 : 0}}>
                                     {
-                                        songs.map((e: any) => <SearchSong
-                                        key={e.id}
-                                        song={e}
-                                        answered={answered}
-                                        setAnswered={setAnswered}
-                                        setMyAnswer={setMyAnswer}
-                                        setCorrect={setCorrect}
-                                        />)
+                                        songs.map((e: any) => 
+                                            <SearchSong
+                                                key={e.id}
+                                                song={e}
+                                                answered={answered}
+                                                setAnswered={setAnswered}
+                                                setMyAnswer={setMyAnswer}
+                                                setCorrect={setCorrect}
+                                            />)
                                     }
                                 </View>
                             </View>

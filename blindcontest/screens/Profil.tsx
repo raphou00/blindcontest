@@ -15,7 +15,7 @@ export default function Profil() {
         <Layout>
             <View style={{ gap: 50 }}>
                 <View style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Text style={{...gstyles.buttonText, fontSize: 30}}>Vos points :</Text>
+                    <Text style={{...gstyles.buttonText, fontSize: 30}}>Vos points</Text>
                     <View style={styles.point}>
                         <Text style={styles.pointText}>{user?.user_metadata.point}</Text>
                     </View>

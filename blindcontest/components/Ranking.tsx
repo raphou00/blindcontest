@@ -13,7 +13,7 @@ export default function Ranking({ players, visible }: RankingProps) {
             </View>
             <View style={styles.rankingList}>
                 {
-                    players.map((e: any, idx: number) => <Text key={e.id} style={{...styles.rankingListName, color: idx == 0 ? "gold" : "white"}}>{e.name} - {e.point}</Text>)
+                    players.map((e: any, idx: number) => <Text key={e.id} style={styles.rankingListName}>{e.name} - {e.point}</Text>)
                 }
             </View>
         </View>

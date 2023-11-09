@@ -5,12 +5,23 @@ import PlayerList from "../components/PlayerList";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
-export default function Lobby({ navigation, route }: { navigation: any, route: any }) {
-    if (!route.params) return <></>;
-    const { room, host } = route.params;
+export default function Lobby({ navigation, route }: any) {
     const [name, setName] = useState<string>("");
     const [logged, setLogged] = useState<boolean>(false);
     const [players, setPlayers] = useState<any[]>([]);
+
+    const [room, setRoom] = useState<string>(route.params.room);
+    const [host, setHost] = useState<boolean>(route.params.host);    
+
+    useEffect(() => {
+        setRoom(route.params.room);
+        setHost(route.params.host);
+    }, [route.params]);
+
+    useEffect(() => {
+        socket.emit("players", { room: room });
+        socket.on("players", data => setPlayers(data.players));
+    }, [room, host]);
     
     useEffect(() => {
         socket.emit("join_lobby", { room: room });

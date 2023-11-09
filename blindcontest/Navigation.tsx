@@ -31,7 +31,7 @@ export default function Navigation() {
                 <Tab.Screen name="join" component={Join} options={setScreenOptions("Rejoindre", "play")} />
                 <Tab.Screen name="auth" component={user ? Profil : Auth} options={setScreenOptions(user ? "Profil" : "Connexion", "user")} />
 
-                <Tab.Screen name="lobby" component={Lobby} options={{ title: "Joueurs", tabBarButton: () => <></> }} />
+                <Tab.Screen name="lobby" component={Lobby} options={{ title: "Joueurs", unmountOnBlur: true, tabBarButton: () => <></> }} />
                 <Tab.Screen name="game" component={Game} options={{ title: "Jeu", tabBarButton: () => <></> }} />
                 <Tab.Screen name="results" component={Results} options={{ title: "Résultats", tabBarButton: () => <></> }} />
             </Tab.Navigator>

@@ -50,7 +50,7 @@ export default function Results({ route }: { route: any }) {
                 {
                     players.length > 0 &&
                     <Text style={styles.winner}>
-                        <Text style={{color: "gold"}}>{players[0].name}</Text> - {players[0].point}
+                        <Text style={{ color: "gold" }}>{players[0].name}</Text>
                     </Text>
                 }
                 

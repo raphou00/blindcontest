@@ -31,7 +31,7 @@ const randomKey = () => {
 
     while (!done) {
         let key = "";
-        for (const i of Array(5)) key += Math.floor(Math.random() * 9);
+        for (let i = 0; i < 5; i++) key += Math.floor(Math.random() * 9);
 
         if (!(rooms.map(e => e.key)).includes(key)) {
             done = true;
@@ -56,11 +56,11 @@ io.on("connection", socket => {
 
 
     socket.on("check_key", data => {
-        const { key } = data;
-        const res = { access: false, key: key };
+        const { room } = data;
+        const res = { access: false, key: room };
 
         for (const e of rooms) {
-            if (key == e.key && !e.started) res.access = true;
+            if (room == e.key && !e.started) res.access = true;
         }
         
         io.to(socket.id).emit("check_key", { ...res });
@@ -175,6 +175,15 @@ io.on("connection", socket => {
         }
 
         callback();
+    });
+
+
+    socket.on("delete_room", data => {
+        for (const e of rooms) {
+            if (e.key == data.room) {
+                rooms.splice(rooms.indexOf(e), 1);
+            }
+        }
     });
 
 
