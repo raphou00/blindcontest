@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable, Image } from "react-native";
 import supabase from "../helpers/supabase";
 import Layout from "../components/Layout";
 import Back from "../components/Back";
@@ -24,6 +24,8 @@ function Login({ navigation }: any) {
 
     return (
         <>
+            <Text style={styles.homeTitle}>Connexion</Text>
+
             <View style={styles.fieldBox}>
                 <Text style={styles.label}>Entrez votre E-Mail</Text>
                 <TextInput
@@ -80,6 +82,8 @@ function Register({ navigation }: any) {
 
     return (
         <>
+            <Text style={styles.homeTitle}>Inscription</Text>
+
             <View style={styles.fieldBox}>
                 <Text style={styles.label}>Entrez un E-Mail</Text>
                 <TextInput
@@ -123,14 +127,19 @@ function Register({ navigation }: any) {
 
 function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login" | "register" | "home">> }) {
     return (
-        <View style={styles.buttons}>
-            <Pressable style={gstyles.button} onPress={() => setPage("login")}>
-                <Text style={gstyles.buttonText}>Connexion</Text>
-            </Pressable>
+        <View style={styles.home}>
+            <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
+            <Text style={styles.homeTitle}>Connexion</Text>
 
-            <Pressable style={gstyles.button} onPress={() => setPage("register")}>
-                <Text style={gstyles.buttonText}>Inscription</Text>
-            </Pressable>
+            <View style={styles.buttons}>
+                <Pressable style={gstyles.button} onPress={() => setPage("login")}>
+                    <Text style={gstyles.buttonText}>Connexion</Text>
+                </Pressable>
+
+                <Pressable style={gstyles.button} onPress={() => setPage("register")}>
+                    <Text style={gstyles.buttonText}>Inscription</Text>
+                </Pressable>
+            </View>
         </View>
     );
 }
@@ -146,12 +155,6 @@ export default function Auth({ navigation }: any) {
                     <Back onPress={() => setPage("home")} />
                 }
 
-                <Text style={styles.title}>
-                    { page === "login" && "Connexion" }
-                    { page === "register" && "Inscription" }
-                    { page === "home" && "Compte" }
-                </Text>
-
                 { page === "home" && <Home setPage={setPage} /> }
                 { page === "login" && <Login navigation={navigation} /> }
                 { page === "register" && <Register navigation={navigation} /> }
@@ -161,12 +164,24 @@ export default function Auth({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 45,
+    home: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+    },
+    homeImg: {
+        height: 200,
+        width: 200
+    },
+    homeTitle: {
+        width: 300,
+        fontSize: 32,
+        textTransform: "uppercase",
         fontWeight: "bold",
-        color: "#FFF",
         textAlign: "center",
-        marginBottom: 50
+        color: "#535bf2",
+        marginBottom: 10
     },
     buttons: {
         width: 300,

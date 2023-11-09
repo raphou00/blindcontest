@@ -23,7 +23,7 @@ export default function Join({ navigation }: { navigation: any }) {
     return (
         <Layout>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
-            <Text style={styles.homeTitle}>blind contest</Text>
+            <Text style={styles.homeTitle}>Rejoindre</Text>
             
             <View style={styles.homeButtons}>
                 <TextInput style={gstyles.input} value={room} onChangeText={setRoom} inputMode="search" onSubmitEditing={login} placeholder="Clé..." />

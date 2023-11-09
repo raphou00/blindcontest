@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         borderColor: "#CCC",
         backgroundColor: "#111",
-        alignSelf: "flex-start"
+        alignSelf: "flex-start",
+        marginBottom: 10
     },
     buttonText: {
         color: "#FFF",
