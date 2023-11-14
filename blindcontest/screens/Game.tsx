@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
 import { Audio } from "expo-av";
-import { socket } from "../helpers/server";
-import { searchSongs } from "../helpers/search";
+import socket from "../lib/socket";
+import { searchSongs } from "../lib/search";
+import { ScreenProps } from "../lib/type";
 import SearchSong from "../components/SearchSong";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
@@ -10,7 +11,7 @@ import Layout from "../components/Layout";
 
 const soundObject: Audio.Sound = new Audio.Sound();
 
-export default function Game({ navigation, route }: { navigation: any, route: any }) {
+export default function Game({ navigation, route }: ScreenProps) {
     const [players, setPlayers] = useState<any[]>([]);
     const [songs, setSongs] = useState<any[]>([]);
     const [answer, setAnswer] = useState<any>(null);
@@ -19,45 +20,56 @@ export default function Game({ navigation, route }: { navigation: any, route: an
     const [answered, setAnswered] = useState<boolean>(false);
     const [correct, setCorrect] = useState<boolean>(false);
     const [rankingVisible, setRankingVisible] = useState<boolean>(false);
+    const [count, setCount] = useState<number>(0);
 
     const { room, host } = route.params;
 
     useEffect(() => {
-        onChangeSearch("Taylor Swift");
-        setSearch("");
-
-        if (host) {
-            socket.emit("audio_room");            
-        }
-
-        socket.on("audio_room", data => {
-            setRankingVisible(false);
-            playSong(data.audio);
-            console.log(data.cheat);
-        });
-        
-        socket.on("answer_room", data => {
-            setAnswer(data.answer);
-            setPlayers(data.players);
-            setAnswered(true);
-        });
-
-        socket.on("next_room", () => {
+        const unsubscribe = navigation.addListener("focus", () => {
             onChangeSearch("Taylor Swift");
             setSearch("");
+            setPlayers([]);
+            setSongs([]);
+            setAnswer(null);
             setMyAnswer(null);
-            setAnswer(false);
             setAnswered(false);
             setCorrect(false);
+            setRankingVisible(false);
+            setCount(0);
+            
+            if (host) {
+                socket.emit("audio_room");            
+            }
+            
+            socket.on("audio_room", data => {
+                setRankingVisible(false);
+                playSong(data.audio);
+                console.log(data.cheat);
+            });
+            
+            socket.on("answer_room", data => {
+                setAnswer(data.answer);
+                setPlayers(data.players);
+                setAnswered(true);
+            });
+            
+            socket.on("next_room", () => {
+                onChangeSearch("Taylor Swift");
+                setSearch("");
+                setMyAnswer(null);
+                setAnswer(false);
+                setAnswered(false);
+                setCorrect(false);
+            });
+            
+            socket.on("results_room", () => {
+                navigation.navigate("results", { room: room });
+            });
         });
-
-        socket.on("results_room", () => {
-            navigation.navigate("results", { room: room });
-        });
-
-        return;
+        
+        return unsubscribe;
     }, []);
-
+        
     const playSong = async (uri: string) => {
         if ((await soundObject.getStatusAsync()).isLoaded) {
             await soundObject.stopAsync();
@@ -78,6 +90,10 @@ export default function Game({ navigation, route }: { navigation: any, route: an
         socket.emit("next_room", () => {
             socket.emit("audio_room");
         });
+    }
+
+    const handleCount = () => {
+        setCount(count + 1);
     }
     
     return (
@@ -105,7 +121,7 @@ export default function Game({ navigation, route }: { navigation: any, route: an
                                 <Image style={styles.imageResponse} source={{ uri: answer.image }} />
                             ) : (
                                 <View style={styles.imageTextContainer}>
-                                    <Text style={styles.imageText}>?</Text>
+                                    <Text style={styles.imageText}>{count}</Text>
                                 </View>
                             )
                         }

@@ -15,8 +15,8 @@ export default StyleSheet.create({
         color: "#F9F9F9",
         fontWeight: "bold",
         shadowOffset: {
-          width: 3,
-          height: 3
+            width: 3,
+            height: 3
         },
         shadowRadius: 6,
         shadowColor: "#000",
@@ -27,8 +27,8 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: "#1A1A1A",
         shadowOffset: {
-          width: 3,
-          height: 3
+            width: 3,
+            height: 3
         },
         shadowRadius: 6,
         shadowColor: "#000",

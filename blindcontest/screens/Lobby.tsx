@@ -1,45 +1,35 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
-import { socket } from "../helpers/server";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
+import socket from "../lib/socket";
+import { ScreenProps } from "../lib/type";
 import PlayerList from "../components/PlayerList";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
-export default function Lobby({ navigation, route }: any) {
+export default function Lobby({ navigation, route }: ScreenProps) {
     const [name, setName] = useState<string>("");
     const [logged, setLogged] = useState<boolean>(false);
-    const [players, setPlayers] = useState<any[]>([]);
-
-    const [room, setRoom] = useState<string>(route.params.room);
-    const [host, setHost] = useState<boolean>(route.params.host);    
-
-    useEffect(() => {
-        setRoom(route.params.room);
-        setHost(route.params.host);
-    }, [route.params]);
-
-    useEffect(() => {
-        socket.emit("players", { room: room });
-        socket.on("players", data => setPlayers(data.players));
-    }, [room, host]);
+    const [players, setPlayers] = useState<any[]>([]); 
+    const { room, host } = route.params;
     
     useEffect(() => {
-        socket.emit("join_lobby", { room: room });
+        const unsubscribe = navigation.addListener("focus", () => {
+            socket.emit("join_lobby", { room: room });
+            socket.emit("players", { room: room });
+            
+            socket.on("players", data => setPlayers(data.players));
+            socket.on("start_room", () => navigation.navigate("game", { room, host }));
+        });
 
-        socket.emit("players", { room: room });
-        socket.on("players", data => setPlayers(data.players));
-
-        socket.on("start_room", () => navigation.navigate("game", { room, host }));
-
-        return;
+        return unsubscribe;
     }, []);
 
     const login = () => {
         if (players.map(e => e.name).includes(name)) {
-            alert("Nom déjà dans la liste");
+            Alert.alert("Nom déjà dans la liste");
             return;
         } else if (name.length < 3) {
-            alert("Nom trop court");
+            Alert.alert("Nom trop court");
             return;
         }
 
@@ -48,13 +38,14 @@ export default function Lobby({ navigation, route }: any) {
     }
 
     const start = () => {
-        if (logged) socket.emit("start_room");
-        else alert("connectez vous pour commencer la partie");
+        socket.emit("start_room");
     }
 
     return (
         <Layout>
-            <Text style={styles.lobbyTitle}>{"#" + room}</Text>
+            <Text style={styles.lobbyTitle}>
+                Clé <Text style={{...styles.lobbyTitle, color: "#646CFF"}}>{room}</Text>
+            </Text>
 
             <View style={styles.lobbyName}>
                 <View style={styles.lobbyNameBox}>
@@ -69,7 +60,11 @@ export default function Lobby({ navigation, route }: any) {
 
             {
                 host ? <>
-                        <Pressable style={{...gstyles.button, width: 300, marginTop: 30}} onPress={start}>
+                        <Pressable
+                            style={{...gstyles.button, width: 300, marginTop: 30, backgroundColor: !logged ? "grey" : gstyles.button.backgroundColor}}
+                            disabled={!logged}
+                            onPress={start}
+                        >
                             <Text style={gstyles.buttonText}>Jouer</Text>
                         </Pressable>
                 </> : <></>
@@ -85,7 +80,6 @@ const styles = StyleSheet.create({
         color: "#F9F9F9",
         marginBottom: 30,
         textDecorationLine: "underline",
-        textDecorationColor: "#FFFFFF",
         textDecorationStyle: "solid"
     },
     lobbyName: {

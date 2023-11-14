@@ -1,5 +1,5 @@
-import { io } from "./socket.js";
-import RequestSpotify from "./RequestSpotify.js";
+import { io } from "../index.js";
+import RequestSpotify from "./Spotify.js";
 
 export default class Room {
     started = false;

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import supabase from "../helpers/supabase";
-import { useAuth } from "../helpers/auth-provider"
+import supabase from "../lib/supabase";
+import { useAuth } from "../components/AuthProvider"
 import Layout from "../components/Layout";
 import gstyles from "../components/Styles";
 
@@ -15,14 +15,14 @@ export default function Profil() {
         <Layout>
             <View style={{ gap: 50 }}>
                 <View style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Text style={{...gstyles.buttonText, fontSize: 30}}>Vos points</Text>
+                    <Text style={{...gstyles.buttonText, fontSize: 30}}>Points</Text>
                     <View style={styles.point}>
                         <Text style={styles.pointText}>{user?.user_metadata.point}</Text>
                     </View>
                 </View>
 
                 <View>
-                    <Text style={{...gstyles.buttonText, textAlign: "left", padding: 5}}>Votre E-Mail :</Text>
+                    <Text style={{...gstyles.buttonText, textAlign: "left", padding: 5}}>E-Mail</Text>
                     <Text style={gstyles.input}>{user?.email}</Text>
                 </View>
 

@@ -1,6 +1,6 @@
 import WebView from "react-native-webview";
-import recaptchaHtml from "../helpers/recaptcha-html";
-import verifyCaptcha from "../helpers/verify-captcha";
+import recaptchaHtml from "../lib/recaptcha-html";
+import verifyCaptcha from "../lib/verify-captcha";
 
 export default function Captcha() {
     const onCheck = async (token: string) => {

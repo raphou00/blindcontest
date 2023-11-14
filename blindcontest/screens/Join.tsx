@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, Image, TextInput, Pressable } from "react-native";
-import { socket } from "../helpers/server";
+import { StyleSheet, View, Text, Image, TextInput, Pressable, Alert } from "react-native";
+import socket from "../lib/socket";
+import { ScreenProps } from "../lib/type";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
-export default function Join({ navigation }: { navigation: any }) {
+export default function Join({ navigation }: ScreenProps) {
     const [room, setRoom] = useState<string>("");
 
     const login = async () => {
         if (!room) {
-            alert("Veuillez entrer une clé de partie.");
+            Alert.alert("Veuillez entrer une clé");
             return;
         }
 
         socket.emit("check_key", { room: room });
         socket.on("check_key", data => {
             if (data.access) navigation.navigate("lobby", { room: room, host: false });
-            else alert("Vous ne pouvez pas rejoindre cette partie");
+            else Alert.alert("Vous ne pouvez pas rejoindre cette partie");
         });
     };
 

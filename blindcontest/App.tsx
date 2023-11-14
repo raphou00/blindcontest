@@ -1,6 +1,6 @@
 import { StyleSheet, SafeAreaView } from "react-native";
-import AuthProvider from "./helpers/auth-provider";
-import Navigation from "./Navigation";
+import AuthProvider from "./components/AuthProvider";
+import Navigation from "./components/Navigation";
 
 export default function App() {
     return (

@@ -1,42 +1,41 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Link } from "@react-navigation/native";
-import { useAuth } from "../helpers/auth-provider";
-import { socket } from "../helpers/server";
+import socket from "../lib/socket";
+import supabase from "../lib/supabase";
+import { ScreenProps } from "../lib/type";
+import { useAuth } from "../components/AuthProvider";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
-import supabase from "../helpers/supabase";
 
-export default function Results({ route }: { route: any }) {
-    const { user } = useAuth();
+export default function Results({ navigation, route }: ScreenProps) {
     const [players, setPlayers] = useState<any[]>([]);
+    const { user } = useAuth();
+
     const { room } = route.params;
     
     useEffect(() => {
-        socket.emit("players", { room: room });
-        socket.on("players", data => setPlayers(data.players));
+        const unsubscribe = navigation.addListener("focus", () => {
+            socket.emit("players", { room: room });
+            socket.on("players", data => setPlayers(data.players));
 
-        return;
+            if (!user) return;
+            addPoint();
+        });
+
+        return unsubscribe;
     }, []);
 
-    useEffect(() => {
-        (async () => {
-            if (!user) return;
-            
-            for (const p of players) {
-                if (p.id === socket.id) {
-                    await supabase.auth.updateUser({
-                        data: {
-                            point: user?.user_metadata.point + p.point
-                        }
-                    });
-                }
-            }
-        })();
+    const addPoint = async () => {
+        const point = players.find(p => p.id === socket.id).point;
 
-        return;
-    }, [players]);
+        await supabase.auth.updateUser({
+            data: {
+                point: user?.user_metadata.point + point
+            }
+        });
+    }
 
     return (
         <Layout>

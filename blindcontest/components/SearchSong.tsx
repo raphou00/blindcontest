@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
-import { socket } from "../helpers/server";
+import socket from "../lib/socket";
 
 type SearchSongsProps = {
     song: {

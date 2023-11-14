@@ -1,21 +1,29 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
-import { socket } from "../helpers/server";
+import socket from "../lib/socket";
+import { ScreenProps } from "../lib/type";
 import Category from "../components/Category";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
-export default function Create({ navigation }: { navigation: any }) {
-    const [room, setRoom] = useState<string>("");
+export default function Create({ navigation }: ScreenProps) {
     const [activeCategories, setActiveCategories] = useState<any[]>([]);
+    const [room, setRoom] = useState<string>("");
     const [time, setTime] = useState<string>("20");
-    const [nbrQuestions, setNbrQuestions] = useState<string>("20");
+    const [nbrQuestions, setNbrQuestions] = useState<string>("10");
     
     useEffect(() => {
-        socket.emit("create_room");
-        socket.on("create_room", data => setRoom(data.key));
+        const unsubscribe = navigation.addListener("focus", () => {
+            setActiveCategories([]);
+            setRoom("");
+            setTime("20");
+            setNbrQuestions("10");
+            
+            socket.emit("create_room");
+            socket.on("create_room", data => setRoom(data.key));
+        });
         
-        return;
+        return unsubscribe;
     }, []);
 
     const onCreate = () => {        
@@ -29,7 +37,9 @@ export default function Create({ navigation }: { navigation: any }) {
 
     return (
         <Layout>
-            <Text style={styles.createTitle}>{"#" + room}</Text>
+            <Text style={styles.createTitle}>
+                Clé <Text style={{...styles.createTitle, color: "#646CFF"}}>{room}</Text>
+            </Text>
 
             <View style={styles.createBox}>
                 <Text style={styles.createBoxTitle}>Catégories</Text>
@@ -39,7 +49,7 @@ export default function Create({ navigation }: { navigation: any }) {
             </View>
 
             <View style={styles.createBox}>
-                <Text style={styles.createBoxTitle}>Temps pour répondre</Text>
+                <Text style={styles.createBoxTitle}>Temps pour répondre (sec)</Text>
                 <TextInput
                     style={[gstyles.input, styles.createInput]}
                     value={time}
@@ -48,7 +58,7 @@ export default function Create({ navigation }: { navigation: any }) {
             </View>
             
             <View style={styles.createBox}>
-                <Text style={styles.createBoxTitle}>Nombre de questions</Text>
+                <Text style={styles.createBoxTitle}>Nombre de musiques</Text>
                 <TextInput
                     style={[gstyles.input, styles.createInput]}
                     value={nbrQuestions}
@@ -72,7 +82,6 @@ const styles = StyleSheet.create({
         color: "#F9F9F9",
         marginBottom: 10,
         textDecorationLine: "underline",
-        textDecorationColor: "#FFFFFF",
         textDecorationStyle: "solid"
     },
     createPlayers: {

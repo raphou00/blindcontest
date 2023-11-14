@@ -1,10 +1,10 @@
 import axios from "axios";
-import { io } from "./socket.js";
+import { io } from "../index.js";
 
 const client_id = "57a56c9278bb47f39e8a7a6c8231cb0f";
 const client_secret = "914a526426b64784baa8e4db285e1871";
 
-class RequestSpotify {
+class Spotify {
     constructor() {
         this.req = axios.create({
             baseURL: "https://api.spotify.com/v1/"
@@ -83,8 +83,8 @@ class RequestSpotify {
     }
 }
 
-const requestSpotify = new RequestSpotify();
-await requestSpotify.setToken();
-requestSpotify.actualiseToken();
+const spotify = new Spotify();
+await spotify.setToken();
+spotify.actualiseToken();
 
-export default requestSpotify;
+export default spotify;

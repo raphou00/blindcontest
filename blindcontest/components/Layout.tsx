@@ -17,6 +17,8 @@ export default function Layout({ children }: { children: any }) {
             duration: 500,
             useNativeDriver: false,
         }).start();
+
+        return;
     }, []);
 
     return (

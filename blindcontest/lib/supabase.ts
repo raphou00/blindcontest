@@ -11,8 +11,7 @@ const supabase: SupabaseClient = createClient(supa_url, supa_anon, {
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: false,
-    },
-
+    }
 });
 
 export default supabase;

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "blindcontest",
-    "slug": "Blind Contest",
+    "slug": "blind-contest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a1a"
-      }
+      },
+      "package": "com.salimmm.blindcontest"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9bc95f70-fda6-4908-9c55-3dbb663f0590"
+      }
+    },
+    "owner": "salimmm"
   }
 }

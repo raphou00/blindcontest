@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable, Image } from "react-native";
-import supabase from "../helpers/supabase";
+import { StyleSheet, View, Text, TextInput, Pressable, Image, Alert } from "react-native";
+import supabase from "../lib/supabase";
+import { ScreenProps } from "../lib/type";
 import Layout from "../components/Layout";
 import Back from "../components/Back";
 import gstyles from "../components/Styles";
-import Captcha from "../components/Catpcha";
 
 function Login({ navigation }: any) {
     const [email, setEmail] = useState<string>("");
@@ -16,8 +16,8 @@ function Login({ navigation }: any) {
             password
         });
 
-        if (error) alert("Connexion échouée");
-        else  alert("Connexion réussie");
+        if (error) Alert.alert("Connexion échouée");
+        else Alert.alert("Connexion réussie");
 
         navigation.navigate("home");
     }
@@ -60,7 +60,7 @@ function Register({ navigation }: any) {
 
     const submit = async () => {
         if (password !== passwordConfirm) {
-            alert("Les mots de passe ne corréspondent pas");
+            Alert.alert("Les mots de passe ne corréspondent pas");
             return;
         }
 
@@ -74,8 +74,8 @@ function Register({ navigation }: any) {
             }
         });
 
-        if (error) alert("Inscription échouée");
-        else alert("Inscription réussie");
+        if (error) Alert.alert("Inscription échouée");
+        else Alert.alert("Inscription réussie");
 
         navigation.navigate("home");
     }
@@ -114,10 +114,6 @@ function Register({ navigation }: any) {
                     secureTextEntry={true} />
             </View>
 
-            {/* <View style={{flex: 1}}>
-                <Captcha />
-            </View> */}
-
             <Pressable style={gstyles.button} onPress={submit}>
                 <Text style={gstyles.buttonText}>S'inscrire</Text>
             </Pressable>
@@ -144,7 +140,7 @@ function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login
     );
 }
 
-export default function Auth({ navigation }: any) {
+export default function Auth({ navigation }: ScreenProps) {
     const [page, setPage] = useState<"login" | "register" | "home">("home");
 
     return (

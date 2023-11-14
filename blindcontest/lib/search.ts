@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { socket } from "./server";
+import socket from "./socket";
 
 const spotifyApi: AxiosInstance = axios.create({
     baseURL: "https://api.spotify.com/v1/",
