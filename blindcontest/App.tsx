@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
         minWidth: 320,
         width: "100%",
         height: "100%",
-        backgroundColor: "#1A1A1A"
+        backgroundColor: "#000"
     }
 });

@@ -11,7 +11,7 @@ export default StyleSheet.create({
         borderRadius: 6,
         borderWidth: 1,
         borderColor: "slateblue",
-        backgroundColor: "#1A1A1A",
+        backgroundColor: "#111111",
         color: "#FFFFFF",
         fontWeight: "bold",
         shadowOffset: {
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     button: {
         borderRadius: 6,
         borderWidth: 1,
-        borderColor: "#1A1A1A",
+        borderColor: "#111111",
         shadowOffset: {
             width: 3,
             height: 3

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         height: 500,
         borderStyle: "solid",
         borderWidth: 2,
-        borderColor: "#213547",
+        borderColor: "slateblue",
         borderRadius: 6,
         backgroundColor: "#111111"
     },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "10%",
         borderBottomWidth: 3,
-        borderColor: "#213547",
+        borderColor: "slateblue",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#111111",
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: "#213547",
+        borderColor: "slateblue",
         borderRadius: 6
     },
     searchTitle: {
