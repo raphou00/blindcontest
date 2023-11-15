@@ -48,9 +48,7 @@ export default function Results({ navigation, route }: ScreenProps) {
 
                 {
                     players.length > 0 &&
-                    <Text style={styles.winner}>
-                        <Text style={{ color: "gold" }}>{players[0].name}</Text>
-                    </Text>
+                    <Text style={styles.winner}>{players[0].name}</Text>
                 }
                 
                 <View>
@@ -67,7 +65,7 @@ const styles = StyleSheet.create({
     },
     winner: {
         fontWeight: "bold",
-        color: "#FFFFFF",
+        color: "gold",
         fontSize: 30,
         width: 300,
         textAlign: "center"

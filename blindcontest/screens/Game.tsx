@@ -8,6 +8,7 @@ import SearchSong from "../components/SearchSong";
 import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
+import Timer from "../components/Timer";
 
 const soundObject: Audio.Sound = new Audio.Sound();
 
@@ -20,7 +21,8 @@ export default function Game({ navigation, route }: ScreenProps) {
     const [answered, setAnswered] = useState<boolean>(false);
     const [correct, setCorrect] = useState<boolean>(false);
     const [rankingVisible, setRankingVisible] = useState<boolean>(false);
-    const [count, setCount] = useState<number>(0);
+    const [timer, setTimer] = useState<boolean>(false);
+    const [roomTime, setRoomTime] = useState<number>(20);
 
     const { room, host } = route.params;
 
@@ -35,15 +37,16 @@ export default function Game({ navigation, route }: ScreenProps) {
             setAnswered(false);
             setCorrect(false);
             setRankingVisible(false);
-            setCount(0);
+            setTimer(false);
             
-            if (host) {
-                socket.emit("audio_room");            
-            }
+            socket.emit("audio_room");
             
             socket.on("audio_room", data => {
                 setRankingVisible(false);
+                setTimer(true);
+                setRoomTime(data.time);
                 playSong(data.audio);
+
                 console.log(data.cheat);
             });
             
@@ -51,6 +54,11 @@ export default function Game({ navigation, route }: ScreenProps) {
                 setAnswer(data.answer);
                 setPlayers(data.players);
                 setAnswered(true);
+                setTimer(false);
+
+                setTimeout(() => {
+                    setRankingVisible(true);
+                }, 5000);
             });
             
             socket.on("next_room", () => {
@@ -91,10 +99,6 @@ export default function Game({ navigation, route }: ScreenProps) {
             socket.emit("audio_room");
         });
     }
-
-    const handleCount = () => {
-        setCount(count + 1);
-    }
     
     return (
         <Layout>
@@ -103,15 +107,16 @@ export default function Game({ navigation, route }: ScreenProps) {
                 {
                     rankingVisible &&
                     <View style={styles.ranking}>
+                        <Text style={styles.winner}>{players[0].name}</Text>
                         <Ranking players={players} visible={rankingVisible} />
-                    </View>
-                }
 
-                {
-                    answer &&
-                    <Pressable onPress={() => setRankingVisible(!rankingVisible)}>
-                        <Image style={styles.rankingImage} source={require("../assets/ranking.png")} />
-                    </Pressable>
+                        {
+                            host &&
+                            <Pressable style={{...gstyles.button, width: 300, marginTop: 10}} onPress={nextQuestion}>
+                                <Text style={gstyles.buttonText}>Suivant</Text>
+                            </Pressable>
+                        }
+                    </View>
                 }
 
                 <View>
@@ -121,7 +126,9 @@ export default function Game({ navigation, route }: ScreenProps) {
                                 <Image style={styles.imageResponse} source={{ uri: answer.image }} />
                             ) : (
                                 <View style={styles.imageTextContainer}>
-                                    <Text style={styles.imageText}>{count}</Text>
+                                    <Text style={styles.imageText}>
+                                        <Timer nbr={roomTime} play={timer} />
+                                    </Text>
                                 </View>
                             )
                         }
@@ -141,15 +148,15 @@ export default function Game({ navigation, route }: ScreenProps) {
                     answered &&
                     <>
                         <View style={styles.result}>
-                                {
-                                    answer ?
-                                    <View style={styles.resultBox}>
-                                        <Image style={styles.resultImg} source={correct ? require("../assets/correct.png") : require("../assets/incorrect.png")} />
-                                        <Text style={styles.resultText}>{correct ? "Correcte" : "Incorrecte"}</Text>
-                                    </View>
-                                    :
-                                    <Text style={styles.resultTitle}>En attente du résultat</Text>
-                                }
+                            {
+                                answer ?
+                                <View style={styles.resultBox}>
+                                    <Image style={styles.resultImg} source={correct ? require("../assets/correct.png") : require("../assets/incorrect.png")} />
+                                    <Text style={styles.resultText}>{correct ? "Correcte" : "Incorrecte"}</Text>
+                                </View>
+                                :
+                                <Text style={styles.resultTitle}>En attente du résultat</Text>
+                            }
                         </View>
 
                         {
@@ -164,39 +171,26 @@ export default function Game({ navigation, route }: ScreenProps) {
 
 
                 {
-                    answer ?
-                    <>
-                        {
-                            host &&
-                            <Pressable style={{...gstyles.button, width: 300, marginTop: 10}} onPress={nextQuestion}>
-                                <Text style={gstyles.buttonText}>Suivant</Text>
-                            </Pressable>
-                        }
-                    </>
-                    :
-                    <>
-                        {
-                            !myAnswer &&
-                            <View style={styles.search}>
-                                <Text style={styles.searchTitle}>Trouve la musique</Text>
-                                <TextInput style={[gstyles.input, styles.searchInput]} value={search} onChangeText={onChangeSearch} placeholder="Rechercher une musique..." />
-                                
-                                <View style={{...styles.songContainer, marginTop: songs.length > 0 ? 10 : 0}}>
-                                    {
-                                        songs.map((e: any) => 
-                                            <SearchSong
-                                                key={e.id}
-                                                song={e}
-                                                answered={answered}
-                                                setAnswered={setAnswered}
-                                                setMyAnswer={setMyAnswer}
-                                                setCorrect={setCorrect}
-                                            />)
-                                    }
-                                </View>
+                    (!answer && !myAnswer) && (
+                        <View style={styles.search}>
+                            <Text style={styles.searchTitle}>Trouve la musique</Text>
+                            <TextInput style={[gstyles.input, styles.searchInput]} value={search} onChangeText={onChangeSearch} placeholder="Rechercher une musique..." />
+                            
+                            <View style={{...styles.songContainer, marginTop: songs.length > 0 ? 10 : 0}}>
+                                {
+                                    songs.map((e: any) => 
+                                    <SearchSong
+                                    key={e.id}
+                                    song={e}
+                                    answered={answered}
+                                    setAnswered={setAnswered}
+                                    setMyAnswer={setMyAnswer}
+                                    setCorrect={setCorrect}
+                                    />)
+                                }
                             </View>
-                        }
-                    </>
+                        </View>
+                    )
                 }
             </View>
         </Layout>
@@ -214,8 +208,12 @@ const styles = StyleSheet.create({
 
     ranking: {
         position: "absolute",
-        top: 80,
         left: 0,
+        display: "flex",
+        justifyContent: "space-around",
+        flexDirection: "column",
+        height: "100%",
+        backgroundColor: "#000",
         zIndex: 1000,
     },
     rankingButton: {
@@ -231,6 +229,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#333333",
         borderWidth: 2,
         borderColor: "gold"
+    },
+    winner: {
+        fontWeight: "bold",
+        color: "gold",
+        fontSize: 30,
+        width: 300,
+        textAlign: "center"
     },
 
     image: {

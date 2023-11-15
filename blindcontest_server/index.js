@@ -23,7 +23,7 @@ const getPlayersRoom = room => {
     for (const e of rooms) {
         if (e.key == room) {
             e.playerSort();
-            return e.players
+            return e.players;
         }
     }
 }
@@ -150,7 +150,7 @@ io.on("connection", socket => {
         for (const e of rooms) {
             if (e.key == socket.room) {
                 if (e.currentQuestion == e.nbrQuestions) io.to(socket.room).emit("results_room", { room: socket.room });
-                else io.to(socket.room).emit("audio_room", { audio: e.question[e.currentQuestion].href, cheat: e.question[e.currentQuestion] });
+                else io.to(socket.room).emit("audio_room", { audio: e.question[e.currentQuestion].href, time: e.time, cheat: e.question[e.currentQuestion] });
             }
         }
     });

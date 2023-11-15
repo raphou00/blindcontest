@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         fontWeight: "bold",
         textAlign: "center",
-        color: "#535bf2",
+        color: "slateblue",
         marginBottom: 10
     },
     buttons: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     label: {
-        color: "#FFF",
+        color: "#FFFFFF",
         fontWeight: "bold",
         fontSize: 20
     }

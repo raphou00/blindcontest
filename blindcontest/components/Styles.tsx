@@ -10,9 +10,9 @@ export default StyleSheet.create({
         textAlign: "center",
         borderRadius: 6,
         borderWidth: 1,
-        borderColor: "#646CFF",
+        borderColor: "slateblue",
         backgroundColor: "#1A1A1A",
-        color: "#F9F9F9",
+        color: "#FFFFFF",
         fontWeight: "bold",
         shadowOffset: {
             width: 3,
@@ -34,13 +34,13 @@ export default StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 1,
         padding: 6,
-        backgroundColor: "#646CFF",
+        backgroundColor: "slateblue",
         textAlign: "center"
     },
     buttonText: {
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
-        color: "#F9F9F9"
+        color: "#FFFFFF"
     }
 });

@@ -38,7 +38,7 @@ export default function Create({ navigation }: ScreenProps) {
     return (
         <Layout>
             <Text style={styles.createTitle}>
-                Clé <Text style={{...styles.createTitle, color: "#646CFF"}}>{room}</Text>
+                Clé <Text style={{...styles.createTitle, color: "slateblue"}}>{room}</Text>
             </Text>
 
             <View style={styles.createBox}>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     createTitle: {
         fontSize: 25,
         fontWeight: "bold",
-        color: "#F9F9F9",
+        color: "#FFFFFF",
         marginBottom: 10,
         textDecorationLine: "underline",
         textDecorationStyle: "solid"
@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         textAlign: "right",
-        color: "#F9F9F9"
+        color: "#FFFFFF"
     },
     createPlayersTitleNbr: {
         fontSize: 16,
         fontWeight: "bold",
-        color: "#646CFF"
+        color: "slateblue"
     },
     createPlayersList: {
         overflowY: "scroll",
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         marginLeft: "auto",
         borderBottomWidth: 1,
-        borderColor: "#646CFF",
+        borderColor: "slateblue",
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         paddingRight: 0,
         paddingBottom: 5,
         paddingLeft: 0,
-        color: "#F9F9F9"
+        color: "#FFFFFF"
     },
 
     createBox: {

@@ -11,11 +11,11 @@ import Results from "../screens/Results";
 import Auth from "../screens/Auth";
 import Profil from "../screens/Profil";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<any>();
 
 const setScreenOptions = (title: string, name: string) => Object({
     title: title,
-    tabBarActiveTintColor: "#646CFF",
+    tabBarActiveTintColor: "slateblue",
     tabBarIcon: ({ color }: any) => <FontAwesome5 name={name} color={color} size={20} solid />,
     tabBarLabelStyle: { fontSize: 12 }
 });

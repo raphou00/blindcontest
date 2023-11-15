@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         fontWeight: "bold",
         textAlign: "center",
-        color: "#535bf2"
+        color: "slateblue"
     },
     homeButtons: {
         width: 300,

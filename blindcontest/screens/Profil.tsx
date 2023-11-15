@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderWidth: 2,
         borderRadius: 100,
-        borderColor: "#646CFF",
+        borderColor: "slateblue",
         height: 200,
         width: 200,
         display: "flex",
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     pointText: {
         fontSize: 100,
         fontWeight: "bold",
-        color: "#646CFF",
+        color: "slateblue",
     }
 });

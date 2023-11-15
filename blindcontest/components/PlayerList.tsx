@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         fontSize: 20,
         fontWeight: "bold",
-        color: "#F9F9F9"
+        color: "#FFFFFF"
     },
     playersTitleNbr: {
         paddingLeft: 10,
         fontSize: 16,
         fontWeight: "bold",
-        color: "#646CFF"
+        color: "slateblue"
     },
     playersList: {
         overflowY: "scroll",
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         marginLeft: "auto",
         borderBottomWidth: 1,
-        borderColor: "#646CFF",
+        borderColor: "slateblue",
         textAlign: "center",
         fontSize: 18,
         fontWeight: "bold",
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
         paddingRight: 0,
         paddingBottom: 5,
         paddingLeft: 0,
-        color: "#F9F9F9"
+        color: "#FFFFFF"
     }
 });

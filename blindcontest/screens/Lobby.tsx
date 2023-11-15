@@ -44,7 +44,7 @@ export default function Lobby({ navigation, route }: ScreenProps) {
     return (
         <Layout>
             <Text style={styles.lobbyTitle}>
-                Clé <Text style={{...styles.lobbyTitle, color: "#646CFF"}}>{room}</Text>
+                Clé <Text style={{...styles.lobbyTitle, color: "slateblue"}}>{room}</Text>
             </Text>
 
             <View style={styles.lobbyName}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     lobbyTitle: {
         fontSize: 25,
         fontWeight: "bold",
-        color: "#F9F9F9",
+        color: "#FFFFFF",
         marginBottom: 30,
         textDecorationLine: "underline",
         textDecorationStyle: "solid"
