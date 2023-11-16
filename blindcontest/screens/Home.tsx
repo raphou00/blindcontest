@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <Layout>
             <Image style={styles.homeImg} source={require("../assets/blindcontest.png")} />
-            <Text style={styles.homeTitle}>blind contest</Text>
+            <Text style={styles.homeTitle}>blindcontest</Text>
             
             <View style={styles.homeButtons}>
                 <Link to="/join">

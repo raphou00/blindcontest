@@ -4,7 +4,8 @@ import { RouteProp } from "@react-navigation/native";
 type RootStackParamList = {
     [e: string]: {
         room?: string,
-        host?: boolean
+        host?: boolean,
+        name?: string
     };
 };
   

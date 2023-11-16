@@ -140,7 +140,7 @@ io.on("connection", socket => {
         for (const e of rooms) {
             if (e.key == socket.room) {
                 e.start();
-                io.to(e.key).emit("start_room");
+                io.to(e.key).emit("start_room", { name: e.players.find(e => e.id == socket.id).name });
             }
         }
     });

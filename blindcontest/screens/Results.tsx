@@ -13,24 +13,27 @@ export default function Results({ navigation, route }: ScreenProps) {
     const [players, setPlayers] = useState<any[]>([]);
     const { user } = useAuth();
 
-    const { room } = route.params;
+    const { room, name } = route.params;
     
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
             socket.emit("players", { room: room });
-            socket.on("players", data => setPlayers(data.players));
 
-            if (!user) return;
-            addPoint();
+            socket.on("players", data => {
+                setPlayers(data.players);
+                
+                data.players.forEach((e: any) => {
+                    if (e.id == socket.id) addPoint(e.point);
+                });
+            });
         });
 
         return unsubscribe;
     }, []);
+    
 
-    const addPoint = async () => {
-        const point = players.find(p => p.id === socket.id).point;
-
-        await supabase.auth.updateUser({
+    const addPoint = (point: number) => {
+        supabase.auth.updateUser({
             data: {
                 point: user?.user_metadata.point + point
             }
@@ -48,7 +51,7 @@ export default function Results({ navigation, route }: ScreenProps) {
 
                 {
                     players.length > 0 &&
-                    <Text style={styles.winner}>{players[0].name}</Text>
+                    <Text style={styles.player}>{name}</Text>
                 }
                 
                 <View>
@@ -63,9 +66,9 @@ const styles = StyleSheet.create({
     ranking: {
         gap: 10
     },
-    winner: {
+    player: {
         fontWeight: "bold",
-        color: "gold",
+        color: "#FFFFFF",
         fontSize: 30,
         width: 300,
         textAlign: "center"

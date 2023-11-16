@@ -9,7 +9,8 @@ import Layout from "../components/Layout";
 export default function Lobby({ navigation, route }: ScreenProps) {
     const [name, setName] = useState<string>("");
     const [logged, setLogged] = useState<boolean>(false);
-    const [players, setPlayers] = useState<any[]>([]); 
+    const [players, setPlayers] = useState<any[]>([]);
+
     const { room, host } = route.params;
     
     useEffect(() => {
@@ -18,11 +19,17 @@ export default function Lobby({ navigation, route }: ScreenProps) {
             socket.emit("players", { room: room });
             
             socket.on("players", data => setPlayers(data.players));
-            socket.on("start_room", () => navigation.navigate("game", { room, host }));
+            socket.on("start_room", data => navigation.navigate("game", { room, host, name: data.name }));
         });
+
 
         return unsubscribe;
     }, []);
+
+    const getName = () => {
+        console.log(name);
+        return name;   
+    }
 
     const login = () => {
         if (players.map(e => e.name).includes(name)) {

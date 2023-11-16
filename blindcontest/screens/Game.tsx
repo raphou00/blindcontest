@@ -24,7 +24,8 @@ export default function Game({ navigation, route }: ScreenProps) {
     const [timer, setTimer] = useState<boolean>(false);
     const [roomTime, setRoomTime] = useState<number>(20);
 
-    const { room, host } = route.params;
+    const { room, host, name } = route.params;
+    console.log(name);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
@@ -71,7 +72,7 @@ export default function Game({ navigation, route }: ScreenProps) {
             });
             
             socket.on("results_room", () => {
-                navigation.navigate("results", { room: room });
+                navigation.navigate("results", { room, name });
             });
         });
         
@@ -107,7 +108,7 @@ export default function Game({ navigation, route }: ScreenProps) {
                 {
                     rankingVisible &&
                     <View style={styles.ranking}>
-                        <Text style={styles.winner}>{players[0].name}</Text>
+                        <Text style={styles.player}>{name}</Text>
                         <Ranking players={players} visible={rankingVisible} />
 
                         {
@@ -230,9 +231,9 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "gold"
     },
-    winner: {
+    player: {
         fontWeight: "bold",
-        color: "gold",
+        color: "#FFFFFF",
         fontSize: 30,
         width: 300,
         textAlign: "center"
