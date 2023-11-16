@@ -2,11 +2,13 @@ import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { StyleSheet, View, Text, Image, Pressable, ScrollView } from "react-native";
 import socket from "../lib/socket";
 
+// Propriétés attendues par le composant Category
 type CategoryProps = {
     activeCategories: string[],
     setActiveCategories: Dispatch<SetStateAction<string[]>>
 };
 
+// Propriétés attendues par le composant CardCategory, étendant CategoryProps
 type CardCategoryProps = {
     id: string,
     name: string,
@@ -15,9 +17,11 @@ type CardCategoryProps = {
     setActiveCategories: Dispatch<SetStateAction<string[]>>
 };
 
+// Composant représentant une carte de catégorie
 function CardCategory({ id, name, image, activeCategories, setActiveCategories }: CardCategoryProps) {
     const [active, setActive] = useState<boolean>(false);
 
+    // Fonction appelée lorsqu'une carte est pressée pour activer ou désactiver la catégorie
     const toggleCategory = () => {
         setActiveCategories((prev: string[]) => {
             if (!prev.includes(id)) prev.push(id);
@@ -30,28 +34,37 @@ function CardCategory({ id, name, image, activeCategories, setActiveCategories }
     };
 
     return (
-        <Pressable style={{width: 130}} onPress={toggleCategory}>
-            <View style={{...styles.categoryCard, borderColor: active ? "#535bf2" : "#FFFFFF"}}>
-                <Image style={styles.categoryCardImg} source={{uri: image}} />
+        <Pressable style={{ width: 130 }} onPress={toggleCategory}>
+            <View style={{ ...styles.categoryCard, borderColor: active ? "#535bf2" : "#FFFFFF" }}>
+                <Image style={styles.categoryCardImg} source={{ uri: image }} />
                 <Text style={styles.categoryCardName}>{name}</Text>
             </View>
         </Pressable>
     );
-};
+}
 
+// Composant principal représentant une liste de catégories
 export default function Category({ activeCategories, setActiveCategories }: CategoryProps) {
     const [categories, setCategories] = useState<any[]>([]);
 
     useEffect(() => {
+        // Émission d'un événement socket pour récupérer les catégories
         socket.emit("categories");
-        socket.on("categories", data => setCategories(data.categories));
-        
-        return;
+
+        // Écoute de l'événement socket "categories" pour mettre à jour les catégories
+        const categoriesListener = (data: { categories: any[] }) => setCategories(data.categories);
+        socket.on("categories", categoriesListener);
+
+        // Nettoyage de l'écouteur socket lors du démontage du composant
+        return () => {
+            socket.off("categories", categoriesListener);
+        };
     }, []);
 
     return (
         <ScrollView style={styles.categoryContainer}>
             {
+                // Mapping des catégories pour afficher les cartes
                 categories.map((e: any) => <CardCategory
                     key={e.id}
                     id={e.id}
@@ -62,8 +75,9 @@ export default function Category({ activeCategories, setActiveCategories }: Cate
             }
         </ScrollView>
     );
-};
+}
 
+// Styles pour les composants
 const styles = StyleSheet.create({
     categoryContainer: {
         height: 250,

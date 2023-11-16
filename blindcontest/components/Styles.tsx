@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 
+// Style global pour les input et boutons car je les utilise souvent avec le même style
 export default StyleSheet.create({
     input: {
         width: 300,

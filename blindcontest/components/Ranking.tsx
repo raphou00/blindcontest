@@ -1,25 +1,34 @@
 import { StyleSheet, View, Text } from "react-native";
 
+// Propriétés attendues par le composant Ranking
 type RankingProps = {
-    players: any[],
-    visible: boolean
+    players: any[];
+    visible: boolean;
 };
 
 export default function Ranking({ players, visible }: RankingProps) {
     return (
-        <View style={{...styles.ranking, display: visible ? "flex" : "none"}}>
+        // Conteneur principal du composant, géré par la visibilité
+        <View style={{ ...styles.ranking, display: visible ? "flex" : "none" }}>
+            {/* Titre du classement */}
             <View style={styles.rankingTitle}>
                 <Text style={styles.rankingTitleText}>classement ({players.length})</Text>
             </View>
+
+            {/* Liste des joueurs classés */}
             <View style={styles.rankingList}>
-                {
-                    players.map((e: any, idx: number) => <Text key={e.id} style={styles.rankingListName}>{e.name} - {e.point}</Text>)
-                }
+                {/* Affichage des noms et des points des joueurs */}
+                {players.map((e: any, idx: number) => (
+                    <Text key={e.id} style={styles.rankingListName}>
+                        {e.name} - {e.point}
+                    </Text>
+                ))}
             </View>
         </View>
     );
 }
 
+// Styles pour le composant Ranking
 const styles = StyleSheet.create({
     ranking: {
         width: 300,
@@ -28,7 +37,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "slateblue",
         borderRadius: 6,
-        backgroundColor: "#111111"
+        backgroundColor: "#111111",
     },
     rankingTitle: {
         width: "100%",
@@ -38,25 +47,25 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        flexDirection: "row"
+        flexDirection: "row",
     },
     rankingTitleText: {
         display: "flex",
         textTransform: "uppercase",
         fontSize: 20,
         fontWeight: "bold",
-        color: "#FFFFFF"
+        color: "#FFFFFF",
     },
     rankingTitleNbr: {
         paddingLeft: 10,
         fontSize: 16,
         fontWeight: "bold",
-        color: "slateblue"
+        color: "slateblue",
     },
     rankingList: {
         overflowY: "scroll",
         width: "100%",
-        height: "90%"
+        height: "90%",
     },
     rankingListNoPlayer: {
         width: "100%",
@@ -64,7 +73,7 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontWeight: "bold",
         padding: 5,
-        textAlign: "center"
+        textAlign: "center",
     },
     rankingListName: {
         width: "90%",
@@ -81,6 +90,6 @@ const styles = StyleSheet.create({
         paddingRight: 0,
         paddingBottom: 5,
         paddingLeft: 0,
-        color: "#FFFFFF"
-    }
+        color: "#FFFFFF",
+    },
 });

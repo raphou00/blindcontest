@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable, Image, Alert } from "react-native";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import supabase from "../lib/supabase";
 import { ScreenProps } from "../lib/type";
 import Layout from "../components/Layout";
-import Back from "../components/Back";
 import gstyles from "../components/Styles";
 
+// Composant de connexion
 function Login({ navigation }: any) {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -53,6 +54,7 @@ function Login({ navigation }: any) {
     );
 }
 
+// Composant d'inscription
 function Register({ navigation }: any) {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -60,7 +62,7 @@ function Register({ navigation }: any) {
 
     const submit = async () => {
         if (password !== passwordConfirm) {
-            Alert.alert("Les mots de passe ne corréspondent pas");
+            Alert.alert("Les mots de passe ne correspondent pas");
             return;
         }
 
@@ -105,7 +107,7 @@ function Register({ navigation }: any) {
             </View>
 
             <View style={styles.fieldBox}>
-                <Text style={styles.label}>Confimez le mot de passe</Text>
+                <Text style={styles.label}>Confirmez le mot de passe</Text>
                 <TextInput
                     style={gstyles.input}
                     value={passwordConfirm}
@@ -121,6 +123,7 @@ function Register({ navigation }: any) {
     );
 }
 
+// Composant d'accueil avec les options de connexion et d'inscription
 function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login" | "register" | "home">> }) {
     return (
         <View style={styles.home}>
@@ -140,6 +143,7 @@ function Home({ setPage }: { setPage: React.Dispatch<React.SetStateAction<"login
     );
 }
 
+// Composant principal pour l'authentification
 export default function Auth({ navigation }: ScreenProps) {
     const [page, setPage] = useState<"login" | "register" | "home">("home");
 
@@ -147,8 +151,13 @@ export default function Auth({ navigation }: ScreenProps) {
         <Layout>
             <View style={styles.form}>
                 {
-                    page !== "home" &&
-                    <Back onPress={() => setPage("home")} />
+                    page !== "home" && (
+                        // Bouton pour revenir en arrière
+                        <Pressable style={styles.back} onPress={() => setPage("home")}>
+                            {/* Utilisation de FontAwesome5 pour afficher une icône de chevron gauche */}
+                            <Text style={styles.backText}><FontAwesome5 name="chevron-left" /></Text>
+                        </Pressable>
+                    )
                 }
 
                 { page === "home" && <Home setPage={setPage} /> }
@@ -193,5 +202,24 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontWeight: "bold",
         fontSize: 20
+    },
+
+    back: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 30,
+        height: 30,
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderRadius: 6,
+        borderColor: "#CCC",
+        backgroundColor: "#111111",
+        alignSelf: "flex-start",
+        marginBottom: 10
+    },
+    backText: {
+        color: "#FFFFFF",
+        fontSize: 14
     }
 });

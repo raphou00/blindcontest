@@ -1,25 +1,34 @@
 import { StyleSheet, View, Text } from "react-native";
 
+// Propriétés attendues par le composant PlayerList
 type PlayerListProps = {
-    players: any[]
+    players: any[];
 };
 
 export default function PlayerList({ players }: PlayerListProps) {
     return (
+        // Conteneur principal du composant
         <View style={styles.players}>
+            {/* Titre de la liste des joueurs */}
             <View style={styles.playersTitle}>
                 <Text style={styles.playersTitleText}>joueurs ({players.length})</Text>
             </View>
+
+            {/* Liste des joueurs */}
             <View style={styles.playersList}>
-                {
-                    players.length === 0 ? <Text style={styles.playersListNoPlayer}>Aucun joueur pour le moment</Text> :
+                {/* Si aucun joueur n'est présent, afficher un message */}
+                {players.length === 0 ? (
+                    <Text style={styles.playersListNoPlayer}>Aucun joueur pour le moment</Text>
+                ) : (
+                    // Afficher la liste des noms des joueurs
                     players.map((e: any) => <Text key={e.id} style={styles.playersListName}>{e.name}</Text>)
-                }
+                )}
             </View>
         </View>
     );
-};
+}
 
+// Styles pour le composant PlayerList
 const styles = StyleSheet.create({
     players: {
         backgroundColor: "#111111",
@@ -35,7 +44,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 6,
         borderBottomRightRadius: 6,
         borderBottomLeftRadius: 6,
-        overflow: "hidden"
+        overflow: "hidden",
     },
     playersTitle: {
         width: "100%",
@@ -45,25 +54,25 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        flexDirection: "row"
+        flexDirection: "row",
     },
     playersTitleText: {
         display: "flex",
         textTransform: "uppercase",
         fontSize: 20,
         fontWeight: "bold",
-        color: "#FFFFFF"
+        color: "#FFFFFF",
     },
     playersTitleNbr: {
         paddingLeft: 10,
         fontSize: 16,
         fontWeight: "bold",
-        color: "slateblue"
+        color: "slateblue",
     },
     playersList: {
         overflowY: "scroll",
         width: "100%",
-        height: "90%"
+        height: "90%",
     },
     playersListNoPlayer: {
         width: "100%",
@@ -71,7 +80,7 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontWeight: "bold",
         padding: 5,
-        textAlign: "center"
+        textAlign: "center",
     },
     playersListName: {
         width: "90%",
@@ -88,6 +97,6 @@ const styles = StyleSheet.create({
         paddingRight: 0,
         paddingBottom: 5,
         paddingLeft: 0,
-        color: "#FFFFFF"
-    }
+        color: "#FFFFFF",
+    },
 });

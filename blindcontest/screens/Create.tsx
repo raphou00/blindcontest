@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable, Alert } from "react-native";
 import socket from "../lib/socket";
 import { ScreenProps } from "../lib/type";
 import Category from "../components/Category";
@@ -7,30 +7,48 @@ import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
 export default function Create({ navigation }: ScreenProps) {
+    // État local pour les catégories actives, la clé de la salle, le temps et le nombre de questions
     const [activeCategories, setActiveCategories] = useState<any[]>([]);
     const [room, setRoom] = useState<string>("");
     const [time, setTime] = useState<string>("20");
     const [nbrQuestions, setNbrQuestions] = useState<string>("10");
-    
+
     useEffect(() => {
+        // Effet secondaire lors de la mise au premier plan du composant
         const unsubscribe = navigation.addListener("focus", () => {
+            // Réinitialiser les états lorsque le composant devient actif
             setActiveCategories([]);
             setRoom("");
             setTime("20");
             setNbrQuestions("10");
-            
+
+            // Émettre un événement pour créer une nouvelle salle et écouter la réponse
             socket.emit("create_room");
             socket.on("create_room", data => setRoom(data.key));
         });
-        
-        return unsubscribe;
-    }, []);
 
-    const onCreate = () => {        
+        // Nettoyer l'abonnement lorsque le composant est démonté ou lorsque la navigation change
+        return unsubscribe;
+    }, [navigation]);
+
+    // Gérer la création de la salle
+    const handleCreate = () => {
+        // Convertir les valeurs en nombres
+        const nTime = Number.parseInt(time);
+        const nQuestions = Number.parseInt(nbrQuestions);
+
+        // Vérifier si les valeurs sont des nombres valides
+        if (isNaN(nTime) || isNaN(nQuestions)) {
+            // Gestion des erreurs, alerte à l'utilisateur
+            Alert.alert("Entrez des valeurs valides")
+            return;
+        }
+
+        // Émettre un événement pour mettre à jour les paramètres de la salle et naviguer vers le lobby
         socket.emit("update_room", {
             key: room,
-            time: Number.parseInt(time),
-            nbrQuestions: Number.parseInt(nbrQuestions),
+            time: nTime,
+            nbrQuestions: nQuestions,
             categories: activeCategories
         }, () => navigation.navigate("lobby", { room: room, host: true }));
     }
@@ -38,7 +56,7 @@ export default function Create({ navigation }: ScreenProps) {
     return (
         <Layout>
             <Text style={styles.createTitle}>
-                Clé <Text style={{...styles.createTitle, color: "slateblue"}}>{room}</Text>
+                Clé <Text style={{ ...styles.createTitle, color: "slateblue" }}>{room}</Text>
             </Text>
 
             <View style={styles.createBox}>
@@ -56,7 +74,7 @@ export default function Create({ navigation }: ScreenProps) {
                     onChangeText={setTime}
                     inputMode="numeric" />
             </View>
-            
+
             <View style={styles.createBox}>
                 <Text style={styles.createBoxTitle}>Nombre de musiques</Text>
                 <TextInput
@@ -66,7 +84,7 @@ export default function Create({ navigation }: ScreenProps) {
                     inputMode="numeric" />
             </View>
 
-            <Pressable onPress={onCreate}>
+            <Pressable onPress={handleCreate}>
                 <View style={[gstyles.button, styles.createButton]}>
                     <Text style={gstyles.buttonText}>Créer et rejoindre</Text>
                 </View>
