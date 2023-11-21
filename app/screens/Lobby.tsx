@@ -20,7 +20,7 @@ export default function Lobby({ navigation, route }: ScreenProps) {
 
         socket.on("players", data => setPlayers(data.players));
 
-        socket.on("start_room", data => navigation.navigate("game", { room, host, name: data.name }));
+        socket.on("start_room", () => navigation.navigate("game", { room, host, name }));
 
         return;
     }, []);

@@ -9,7 +9,7 @@ import Ranking from "../components/Ranking";
 import gstyles from "../components/Styles";
 import Layout from "../components/Layout";
 
-export default function Results({ navigation, route }: ScreenProps) {
+export default function Results({ route }: ScreenProps) {
     const [players, setPlayers] = useState<any[]>([]);
 
     const { user } = useAuth();

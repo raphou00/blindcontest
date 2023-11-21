@@ -27,6 +27,7 @@ export default function Game({ navigation, route }: ScreenProps) {
     const { room, host, name } = route.params;
 
     useEffect(() => {
+        onChangeSearch("Eminem")
         socket.emit("audio_room");
 
         socket.on("audio_room", data => {
@@ -50,7 +51,7 @@ export default function Game({ navigation, route }: ScreenProps) {
         });
 
         socket.on("next_room", () => {
-            onChangeSearch("Taylor Swift");
+            onChangeSearch("Eminem");
             setSearch("");
             setMyAnswer(null);
             setAnswer(false);
