@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { Server } from "https";
+import { Server } from "http";
 import { Server as Socket } from "socket.io";
 import fs from "fs";
 
@@ -13,7 +13,7 @@ const options = {
 }
 
 export const app = express();
-export const server = Server(options, app);
+export const server = Server(app);
 export const io = new Socket(server, {
     cors: {
         origin: "*",

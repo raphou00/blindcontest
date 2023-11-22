@@ -28,6 +28,8 @@ export default function Game({ navigation, route }: ScreenProps) {
 
     useEffect(() => {
         onChangeSearch("Eminem")
+        setSearch("")
+
         socket.emit("audio_room");
 
         socket.on("audio_room", data => {
