@@ -8,7 +8,7 @@ type AuthContext = {
 
 const authContext: React.Context<AuthContext | {}> = createContext({});
 
-const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {

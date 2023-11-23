@@ -1,19 +1,13 @@
 import express from "express";
 import cors from "cors";
-import { Server } from "https";
+import { Server } from "http";
 import { Server as Socket } from "socket.io";
-import fs from "fs";
 
 import Spotify from "./class/Spotify.js";
 import Room from "./class/Room.js";
 
-const options = {
-    key: fs.readFileSync("./server.key"),
-    cert: fs.readFileSync("./server.crt")
-}
-
 export const app = express();
-export const server = Server(options, app);
+export const server = Server(app);
 export const io = new Socket(server, {
     cors: {
         origin: "*",
