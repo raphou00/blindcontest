@@ -1,0 +1,3 @@
+# Blindcontest
+
+Blindtest mobile multijoueur
