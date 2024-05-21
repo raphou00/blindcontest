@@ -1,3 +1,1 @@
 # Blindcontest
-
-Blindtest mobile multijoueur
